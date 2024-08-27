@@ -8,7 +8,7 @@
 **************************************
 
 [rewrite_local]
-^https:\/\/api\.geefoo\.cn\/v2\/account\/userinfo url script-response-body https://raw.githubusercontent.com/Yu9191/Rewrite/main/jihu.js
+^https:\/\/api\.geefoo\.cn\/v2\/account\/userinfo url script-response-body https://raw.githubusercontent.com/zkname/Rewrite/main/jihu.js
 
 [mitm]
 hostname = api.geefoo.cn

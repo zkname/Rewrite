@@ -6,7 +6,7 @@
 [rewrite_local]
 
 
-https://time.geekbang.org/serv/v1 url script-response-body https://raw.githubusercontent.com/Yu9191/Rewrite/main/jikeshijian.js
+https://time.geekbang.org/serv/v1 url script-response-body https://raw.githubusercontent.com/zkname/Rewrite/main/jikeshijian.js
 
 [mitm] 
 

@@ -5,7 +5,7 @@ Lento
 
 
 [rewrite_local]
-https://lentoapp.com:8081/getUserMemberShipInfo url script-response-body https://raw.githubusercontent.com/Yu9191/Rewrite/main/Lento.js
+https://lentoapp.com:8081/getUserMemberShipInfo url script-response-body https://raw.githubusercontent.com/zkname/Rewrite/main/Lento.js
 
 
 [MITM]
