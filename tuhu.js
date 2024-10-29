@@ -13,9 +13,9 @@
 hostname = api.tuhu.cn
 
 [Script]
-http-request https:\/\/api\.tuhu\.cn\/User\/GetInternalCenterInfo tag=途虎养车#, script-path=https://raw.githubusercontent.com/FoKit/Scripts/main/scripts/tuhu.js,requires-body=0
+http-request https:\/\/api\.tuhu\.cn\/User\/GetInternalCenterInfo tag=途虎养车#, script-path=https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/main/tuhu.js,requires-body=0
 
-cron "30 9 * * *" script-path=https://raw.githubusercontent.com/FoKit/Scripts/main/scripts/tuhu.js,tag = 途虎养车,enable=true
+cron "30 9 * * *" script-path=https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/main/tuhu.js,tag = 途虎养车,enable=true
 
 ------------------ Stash 配置 -----------------
 
