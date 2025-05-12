@@ -25,7 +25,7 @@ $.jd_tempKey = 'jd_temp', $.wskeyKey = 'wskeyList';  // 缓存键名
 $.is_debug = $.getdata('is_debug') || 'false';  // 调试模式
 $.chat_id = $.getdata('WSKEY_TG_USER_ID') || '';  // TG CHAT ID
 $.bot_token = $.getdata('WSKEY_TG_BOT_TOKEN') || '';  // TG Robot Token
-$.autoSubmit = $.getdata('WSKEY_AUTO_UPLOAD') || 'true';  // 是否自动提交
+$.autoSubmit = $.getdata('WSKEY_AUTO_UPLOAD') || 'false';  // 是否自动提交
 $.Messages = [], $.cookie = '';  // 初始化数据
 
 // 脚本执行入口
