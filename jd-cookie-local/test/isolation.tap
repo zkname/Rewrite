@@ -1,0 +1,407 @@
+TAP version 13
+# Subtest: bundle executes full manual conversion with strict transport options
+ok 1 - bundle executes full manual conversion with strict transport options
+  ---
+  duration_ms: 25.816996
+  type: 'test'
+  ...
+# Subtest: bundle timeout settles once, ignores late callbacks and sends no retry
+ok 2 - bundle timeout settles once, ignores late callbacks and sends no retry
+  ---
+  duration_ms: 6.235574
+  type: 'test'
+  ...
+# Subtest: bundle TLS error has no insecure fallback or credential-bearing error output
+ok 3 - bundle TLS error has no insecure fallback or credential-bearing error output
+  ---
+  duration_ms: 4.199555
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 0
+ok 4 - pinned Python signature vector 0
+  ---
+  duration_ms: 2.378398
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 1
+ok 5 - pinned Python signature vector 1
+  ---
+  duration_ms: 0.450392
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 2
+ok 6 - pinned Python signature vector 2
+  ---
+  duration_ms: 0.485764
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 3
+ok 7 - pinned Python signature vector 3
+  ---
+  duration_ms: 0.887735
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 4
+ok 8 - pinned Python signature vector 4
+  ---
+  duration_ms: 0.437545
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 5
+ok 9 - pinned Python signature vector 5
+  ---
+  duration_ms: 0.76576
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 6
+ok 10 - pinned Python signature vector 6
+  ---
+  duration_ms: 1.67087
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 7
+ok 11 - pinned Python signature vector 7
+  ---
+  duration_ms: 0.613413
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 8
+ok 12 - pinned Python signature vector 8
+  ---
+  duration_ms: 0.333254
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 9
+ok 13 - pinned Python signature vector 9
+  ---
+  duration_ms: 0.301539
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 10
+ok 14 - pinned Python signature vector 10
+  ---
+  duration_ms: 0.354882
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 11
+ok 15 - pinned Python signature vector 11
+  ---
+  duration_ms: 0.273324
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 12
+ok 16 - pinned Python signature vector 12
+  ---
+  duration_ms: 0.167068
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 13
+ok 17 - pinned Python signature vector 13
+  ---
+  duration_ms: 0.212851
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 14
+ok 18 - pinned Python signature vector 14
+  ---
+  duration_ms: 0.257481
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 15
+ok 19 - pinned Python signature vector 15
+  ---
+  duration_ms: 0.266076
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 16
+ok 20 - pinned Python signature vector 16
+  ---
+  duration_ms: 0.206802
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 17
+ok 21 - pinned Python signature vector 17
+  ---
+  duration_ms: 0.22386
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 18
+ok 22 - pinned Python signature vector 18
+  ---
+  duration_ms: 0.303204
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 19
+ok 23 - pinned Python signature vector 19
+  ---
+  duration_ms: 0.199948
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 20
+ok 24 - pinned Python signature vector 20
+  ---
+  duration_ms: 23.441427
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 21
+ok 25 - pinned Python signature vector 21
+  ---
+  duration_ms: 0.187434
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 22
+ok 26 - pinned Python signature vector 22
+  ---
+  duration_ms: 1.436383
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 23
+ok 27 - pinned Python signature vector 23
+  ---
+  duration_ms: 0.316064
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 24
+ok 28 - pinned Python signature vector 24
+  ---
+  duration_ms: 0.185148
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 25
+ok 29 - pinned Python signature vector 25
+  ---
+  duration_ms: 0.169406
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 26
+ok 30 - pinned Python signature vector 26
+  ---
+  duration_ms: 0.319575
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 27
+ok 31 - pinned Python signature vector 27
+  ---
+  duration_ms: 0.20413
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 28
+ok 32 - pinned Python signature vector 28
+  ---
+  duration_ms: 0.153132
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 29
+ok 33 - pinned Python signature vector 29
+  ---
+  duration_ms: 0.15427
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 30
+ok 34 - pinned Python signature vector 30
+  ---
+  duration_ms: 0.202759
+  type: 'test'
+  ...
+# Subtest: pinned Python signature vector 31
+ok 35 - pinned Python signature vector 31
+  ---
+  duration_ms: 0.19969
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 0
+ok 36 - RFC MD5 / UTF8 / Base64 length 0
+  ---
+  duration_ms: 0.585571
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 1
+ok 37 - RFC MD5 / UTF8 / Base64 length 1
+  ---
+  duration_ms: 2.199128
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 3
+ok 38 - RFC MD5 / UTF8 / Base64 length 3
+  ---
+  duration_ms: 0.271486
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 14
+ok 39 - RFC MD5 / UTF8 / Base64 length 14
+  ---
+  duration_ms: 0.247419
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 26
+ok 40 - RFC MD5 / UTF8 / Base64 length 26
+  ---
+  duration_ms: 0.192757
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 8
+ok 41 - RFC MD5 / UTF8 / Base64 length 8
+  ---
+  duration_ms: 0.181779
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 55
+ok 42 - RFC MD5 / UTF8 / Base64 length 55
+  ---
+  duration_ms: 0.161008
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 56
+ok 43 - RFC MD5 / UTF8 / Base64 length 56
+  ---
+  duration_ms: 0.212296
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 64
+ok 44 - RFC MD5 / UTF8 / Base64 length 64
+  ---
+  duration_ms: 0.930778
+  type: 'test'
+  ...
+# Subtest: RFC MD5 / UTF8 / Base64 length 1000
+ok 45 - RFC MD5 / UTF8 / Base64 length 1000
+  ---
+  duration_ms: 0.875787
+  type: 'test'
+  ...
+# Subtest: sign params exactly sign transmitted body and preserve fixed URL encoding
+ok 46 - sign params exactly sign transmitted body and preserve fixed URL encoding
+  ---
+  duration_ms: 7.189722
+  type: 'test'
+  ...
+# Subtest: capture accepts header case and both fields together, never assembles separate requests
+ok 47 - capture accepts header case and both fields together, never assembles separate requests
+  ---
+  duration_ms: 5.044591
+  type: 'test'
+  ...
+# Subtest: Set-Cookie parses arrays, newlines and combined Expires commas
+ok 48 - Set-Cookie parses arrays, newlines and combined Expires commas
+  ---
+  duration_ms: 2.813281
+  type: 'test'
+  ...
+# Subtest: missing, expired, conflicting and fake cookies are rejected
+ok 49 - missing, expired, conflicting and fake cookies are rejected
+  ---
+  duration_ms: 1.11994
+  type: 'test'
+  ...
+# Subtest: token and account checks never infer success from missing fields
+ok 50 - token and account checks never infer success from missing fields
+  ---
+  duration_ms: 2.583794
+  type: 'test'
+  ...
+# Subtest: HTTPS capabilities disable redirects, cookies and insecure TLS; credentials separated by route
+ok 51 - HTTPS capabilities disable redirects, cookies and insecure TLS; credentials separated by route
+  ---
+  duration_ms: 1.44236
+  type: 'test'
+  ...
+# Subtest: capture passes unchanged request, no HTTP, removes all cross-request identity merging
+ok 52 - capture passes unchanged request, no HTTP, removes all cross-request identity merging
+  ---
+  duration_ms: 3.532418
+  type: 'test'
+  ...
+# Subtest: manual conversion validates login, saves local result and clears only consumed capture
+ok 53 - manual conversion validates login, saves local result and clears only consumed capture
+  ---
+  duration_ms: 3.402234
+  type: 'test'
+  ...
+# Subtest: missing pin is resolved only by the JD response; mismatch never replaces existing cookies
+ok 54 - missing pin is resolved only by the JD response; mismatch never replaces existing cookies
+  ---
+  duration_ms: 2.597967
+  type: 'test'
+  ...
+# Subtest: expired capture is cleared; future timestamps rejected before HTTP
+ok 55 - expired capture is cleared; future timestamps rejected before HTTP
+  ---
+  duration_ms: 0.944681
+  type: 'test'
+  ...
+# Subtest: failed conversion leaves previous good cookie and blocks same-key immediate replay
+ok 56 - failed conversion leaves previous good cookie and blocks same-key immediate replay
+  ---
+  duration_ms: 1.808246
+  type: 'test'
+  ...
+# Subtest: concurrent invocations allow one conversion and fence a superseded owner
+ok 57 - concurrent invocations allow one conversion and fence a superseded owner
+  ---
+  duration_ms: 2.788153
+  type: 'test'
+  ...
+# Subtest: a capture arriving mid-conversion survives completion
+ok 58 - a capture arriving mid-conversion survives completion
+  ---
+  duration_ms: 5.535525
+  type: 'test'
+  ...
+# Subtest: storage failure before HTTP and before output commit cannot be reported as success
+ok 59 - storage failure before HTTP and before output commit cannot be reported as success
+  ---
+  duration_ms: 3.189882
+  type: 'test'
+  ...
+# Subtest: token response 302/HTTP_REJECTED is rejected without retries
+ok 60 - token response 302/HTTP_REJECTED is rejected without retries
+  ---
+  duration_ms: 1.509548
+  type: 'test'
+  ...
+# Subtest: token response 429/RATE_LIMITED is rejected without retries
+ok 61 - token response 429/RATE_LIMITED is rejected without retries
+  ---
+  duration_ms: 0.773836
+  type: 'test'
+  ...
+# Subtest: token response 200/RESPONSE_JSON is rejected without retries
+ok 62 - token response 200/RESPONSE_JSON is rejected without retries
+  ---
+  duration_ms: 0.641234
+  type: 'test'
+  ...
+# Subtest: token response 200/TOKEN_REJECTED is rejected without retries
+ok 63 - token response 200/TOKEN_REJECTED is rejected without retries
+  ---
+  duration_ms: 0.531178
+  type: 'test'
+  ...
+# Subtest: token response 200/RESPONSE_FORMAT is rejected without retries
+ok 64 - token response 200/RESPONSE_FORMAT is rejected without retries
+  ---
+  duration_ms: 0.9246
+  type: 'test'
+  ...
+# Subtest: login failure never saves a newly obtained cookie
+ok 65 - login failure never saves a newly obtained cookie
+  ---
+  duration_ms: 1.425622
+  type: 'test'
+  ...
+# Subtest: bundled Loon adapter forwards request and calls done exactly once without network or console
+ok 66 - bundled Loon adapter forwards request and calls done exactly once without network or console
+  ---
+  duration_ms: 60.361024
+  type: 'test'
+  ...
+1..66
+# tests 66
+# suites 0
+# pass 66
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 304.886192
+# isolation {"events":[],"verifiedFiles":10,"node":"v24.18.1","uid":65534}

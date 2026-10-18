@@ -1,0 +1,7 @@
+FROM whyour/qinglong@sha256:3e3971e78edbb5a6a6900bdfb7cd37352a535416f7ad2451747e601a7558d400
+COPY --chmod=0555 . /work/
+USER 65534:65534
+WORKDIR /work
+ENV TZ=Asia/Shanghai
+ENTRYPOINT ["node", "--disallow-code-generation-from-strings", "--import", "./jd-cookie-local/tools/isolation-guard.mjs", "--test", "--test-isolation=none", "--test-reporter=tap"]
+CMD ["jd-cookie-local/test/core.test.mjs", "jd-cookie-local/test/workflow.test.mjs", "jd-cookie-local/test/adapter.test.mjs"]

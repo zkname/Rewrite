@@ -1,0 +1,37 @@
+{
+  "bundleSha256": "3417873b3c5b1c55422189892e4dc28594e02e6747b1347aeb443b1756357996",
+  "baseImage": "whyour/qinglong@sha256:3e3971e78edbb5a6a6900bdfb7cd37352a535416f7ad2451747e601a7558d400",
+  "tests": 66,
+  "passed": 66,
+  "failed": 0,
+  "referenceVectors": 32,
+  "container": {
+    "exitCode": 0,
+    "network": "none",
+    "user": "65534:65534",
+    "readOnly": true,
+    "binds": null,
+    "capDrop": [
+      "ALL"
+    ],
+    "securityOpt": [
+      "no-new-privileges"
+    ],
+    "image": "sha256:0f2a4b7bfd727d7faae92bcff892f0abec19ca75c974c2fe5ff193ae816ac71c"
+  },
+  "telemetry": {
+    "events": [],
+    "verifiedFiles": 10,
+    "node": "v24.18.1",
+    "uid": 65534
+  },
+  "tapSha256": "992763e6dff841955a4083cce664a936fb2859442350c7a93166c3c8e00d57ee",
+  "oracleSha256": "583499044ef92189d0ffb5589b5ddec2e728b63186ea4cc7c2ea3f654bf44723",
+  "credentialsUsed": "synthetic-only",
+  "live": {
+    "loon": "pending",
+    "jdExchange": "pending",
+    "beanQuery": "pending"
+  },
+  "mainMergeAllowed": false
+}

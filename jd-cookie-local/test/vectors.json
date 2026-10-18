@@ -1,0 +1,386 @@
+[
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "0000000000000000",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339199999,
+      "sv": "102"
+    },
+    "expected": "4bb31c1a205425c230541ba629358c4e"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "000000003ade68b1",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200000,
+      "sv": "111"
+    },
+    "expected": "ef75ac132d9e8f6a276d9ee1217d5529"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "0000000075bcd162",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200001,
+      "sv": "120"
+    },
+    "expected": "1ce2f1c9c1d0359460cd04bed229461c"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "00000000b09b3a13",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200002,
+      "sv": "102"
+    },
+    "expected": "25bd11dbf89c6741cf58bbfb8f30ccaf"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "00000000eb79a2c4",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200003,
+      "sv": "111"
+    },
+    "expected": "713faa777ed7214a7d00558aaaa45d44"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "0000000126580b75",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200004,
+      "sv": "120"
+    },
+    "expected": "4d255847519759efeccbd329eac46927"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "0000000161367426",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200005,
+      "sv": "102"
+    },
+    "expected": "302a7b309075d969f56c81550ce19423"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "000000019c14dcd7",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200006,
+      "sv": "111"
+    },
+    "expected": "639164a736e076dc426662235310faf2"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "00000001d6f34588",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200007,
+      "sv": "120"
+    },
+    "expected": "89f302b1b5846f7d4e36cab4ff9038dc"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "0000000211d1ae39",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200008,
+      "sv": "102"
+    },
+    "expected": "8e5632763d12371471efb70feb462385"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "000000024cb016ea",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200009,
+      "sv": "111"
+    },
+    "expected": "18d5412242f3471201dbd44c20362b85"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "00000002878e7f9b",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200010,
+      "sv": "120"
+    },
+    "expected": "11476f71023b0f6ec6e8a74b94cbab51"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "00000002c26ce84c",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200011,
+      "sv": "102"
+    },
+    "expected": "241864a7004a5eb4f289b30f81547f08"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "00000002fd4b50fd",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200012,
+      "sv": "111"
+    },
+    "expected": "28724bec4df330eaf63859050e50e216"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "000000033829b9ae",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200013,
+      "sv": "120"
+    },
+    "expected": "e0afdc741a157a909f0b64c9055f36ff"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "000000037308225f",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200014,
+      "sv": "102"
+    },
+    "expected": "9c2121af47422dc1f91f97b61bb2b8ce"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "00000003ade68b10",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200015,
+      "sv": "111"
+    },
+    "expected": "f86065b80de549a548cf245196c52d70"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "00000003e8c4f3c1",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200016,
+      "sv": "120"
+    },
+    "expected": "a2b0870fbea513d3e18cffc8d8a96e5d"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "0000000423a35c72",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200017,
+      "sv": "102"
+    },
+    "expected": "b59ecc9a3fb8f535efe5507cff5c8c1a"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "000000045e81c523",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200018,
+      "sv": "111"
+    },
+    "expected": "04895beaf2dd604e540b925bc23ab2f4"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "0000000499602dd4",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200019,
+      "sv": "120"
+    },
+    "expected": "11a8a12c43b4b19b2da9fdf008d485bb"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "00000004d43e9685",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200020,
+      "sv": "102"
+    },
+    "expected": "ab38896d0c18c768422d34c1e9105db2"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "000000050f1cff36",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200021,
+      "sv": "111"
+    },
+    "expected": "1dc4944271b9004997a452fb977cc310"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "0000000549fb67e7",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200022,
+      "sv": "120"
+    },
+    "expected": "fbc58910b6e307955a010a7a68438390"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "0000000584d9d098",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200023,
+      "sv": "102"
+    },
+    "expected": "64b3f3e1da65827ececca4b645ef54c1"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "00000005bfb83949",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200024,
+      "sv": "111"
+    },
+    "expected": "3913778df27d4cd885b3b02785ed0572"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "00000005fa96a1fa",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200025,
+      "sv": "120"
+    },
+    "expected": "5172846b3243cb8d7d5050c55d34bc53"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "0000000635750aab",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200026,
+      "sv": "102"
+    },
+    "expected": "d385262b0620df18b4da83b521cfd89a"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{}",
+      "uuid": "000000067053735c",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200027,
+      "sv": "111"
+    },
+    "expected": "75c414440740fa1936cae5086314f5d5"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"中文\":\"😀&=+/%\"}",
+      "uuid": "00000006ab31dc0d",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200028,
+      "sv": "120"
+    },
+    "expected": "7d5b1b7b36fcf5516beb3dd6fcfb38b6"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "{\"to\":\"https%3a%2f%2fplogin.m.jd.com%2fjd-mlogin%2fstatic%2fhtml%2fappjmp_blank.html\"}",
+      "uuid": "00000006e61044be",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200029,
+      "sv": "102"
+    },
+    "expected": "fdbbf74178a12344094319f38d595662"
+  },
+  {
+    "input": {
+      "functionId": "genToken",
+      "body": "\"边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界边界\"",
+      "uuid": "0000000720eead6f",
+      "client": "android",
+      "clientVersion": "11.1.4",
+      "st": 1792339200030,
+      "sv": "111"
+    },
+    "expected": "b5147ff8e84d1a4f69b05325cfda78fb"
+  }
+]

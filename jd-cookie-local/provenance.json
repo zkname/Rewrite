@@ -1,0 +1,23 @@
+{
+  "capture": {
+    "repository": "zkname/Rewrite",
+    "commit": "a8b75ba3433521bc334627dc8f7a1ba540feecb4",
+    "file": "get_jd_wskey.js",
+    "sha256": "08f5f1178af5d71af321137c78c6aa44fb1bc78f4877e4d9b5cefc5e6bb5d6e2"
+  },
+  "signing": {
+    "repository": "z1988com/jd_scripts",
+    "commit": "43823192b751ac2061edb7c7e69bfdcfb9fe76a3",
+    "file": "jd_wskey.py",
+    "sha256": "7a115fa09be99c7b03762d6f455ecce3c68223c6545e2ba0768141035e97c47e",
+    "functions": [
+      "sign_core",
+      "get_sign",
+      "base64Encode",
+      "genParams",
+      "genJDUA"
+    ]
+  },
+  "crypto": "Standalone local RFC 1321 MD5 and RFC 4648 Base64; no runtime package downloads",
+  "status": "experimental-live-unverified"
+}
