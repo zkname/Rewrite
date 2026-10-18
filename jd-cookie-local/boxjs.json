@@ -1,6 +1,6 @@
 {
   "id": "zkname.jd-cookie-local",
-  "name": "京东本地Cookie（实验版）",
+  "name": "京东网页Cookie（实验版）",
   "author": "@zkname",
   "repo": "https://github.com/zkname/Rewrite",
   "apps": [
@@ -9,8 +9,8 @@
       "name": "京东本地Cookie",
       "author": "@zkname",
       "descs_html": [
-        "在 Loon 手动转换成功后查看 cookie 字段。这里只保存本地结果，不上传。",
-        "凭据敏感：不要截图分享、粘贴聊天或启用云备份。任务查询验收仍需在本机进行。"
+        "用 Safari 登录 https://my.m.jd.com/index.html；出现已捕获后，在 Loon 运行“京东网页Cookie校验并保存”。",
+        "捕获仅暂存本机。手动校验只访问京东，成功后在此复制 cookie 字段；不上传、不云备份。"
       ],
       "keys": [
         "jdCookieList",
@@ -24,15 +24,15 @@
           "type": "textarea",
           "autoGrow": false,
           "rows": 10,
-          "desc": "复制所需账号的 cookie 字段，其格式为 pt_key=...; pt_pin=...;。不要复制整个 JSON 列表。"
+          "desc": "复制所需账号的 cookie 字段：pt_key=...; pt_pin=...;。尚未校验的捕获不会覆盖此列表。"
         },
         {
           "id": "jdLocalStatusV1",
-          "name": "最近转换状态",
+          "name": "网页捕获／登录校验状态",
           "val": "{}",
           "type": "textarea",
-          "rows": 4,
-          "desc": "LOGIN_VERIFIED 仅代表登录校验成功；queryVerification=pending 表示京豆查询尚未验收。"
+          "rows": 8,
+          "desc": "WEB_NOT_SEEN：未触发；WEB_NO_COOKIE/WEB_INCOMPLETE：尚未取得完整 Cookie；WEB_CAPTURED：已捕获待校验；LOGIN_VERIFIED：已校验保存。queryVerification=pending 表示京豆查询尚未验收。"
         }
       ]
     }
