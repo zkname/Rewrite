@@ -9,14 +9,14 @@
 ## 手机操作
 
 1. 在 Loon 停用原 WSKEY 捕获规则，避免与新规则重复执行。只安装下列一个插件：
-   `get_jd_cookie.plugin` 适用于 Loon 3.5.1 Build 983+；更早版本使用 `get_jd_cookie.legacy.plugin`。
+   [新版插件](get_jd_cookie.plugin)适用于 Loon 3.5.1 Build 983+；更早版本使用[旧版插件](get_jd_cookie.legacy.plugin)。
    插件中的脚本 URL 固定到经过测试的提交，见 `release.json`。首次下载是安装步骤，不是运行时获取算法。
 2. 捕获需要 Loon 已正常启用 MitM，并由用户在系统中完成证书安装和信任。
    仅解密 `blackhole.m.jd.com` 和 `perf.m.jd.com`。脚本自身 HTTPS 请求明确启用证书校验。
    如京东 App 拒绝代理证书或无法捕获，停止并排查兼容性，不关闭证书校验绕过。
 3. 保持京东 App 已登录，划掉后台重新打开。出现“已捕获”后，十五分钟内到 Loon 脚本列表手动运行
    “京东Cookie手动转换”。一次只转换最近捕获的凭据，不会在请求钩子里发起转换。
-4. 在已有 BoxJs 中添加本目录 `boxjs.json` 的订阅，打开“京东本地Cookie”。成功结果形如：
+4. 在已有 BoxJs 中添加本目录 [boxjs.json](boxjs.json) 的原始文件地址为订阅，打开“京东本地Cookie”。成功结果形如：
 
    ```json
    [{"userName":"账号标识","cookie":"pt_key=实际值; pt_pin=实际值;"}]

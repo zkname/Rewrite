@@ -1,0 +1,10 @@
+#!name=京东本地 Cookie（实验版）
+#!desc=App 捕获后手动转换。无上传，无定时。Cookie 只在本机保存；兼容性待手机实测。
+#!author=zkname
+
+[Script]
+http-request ^https:\/\/(?:blackhole\.m\.jd\.com\/getinfo|perf\.m\.jd\.com\/app_monitor\/\w+\/getRule)(?:[?#]|$) script-path=https://raw.githubusercontent.com/zkname/Rewrite/39f18b696f45473938b1e56dff8fdca66bb03ec9/get_jd_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/39f18b696f45473938b1e56dff8fdca66bb03ec9/get_jd_wskey.js,tag=京东Cookie手动转换,timeout=45,argument="convert",enable=true
+
+[MITM]
+hostname = blackhole.m.jd.com, perf.m.jd.com

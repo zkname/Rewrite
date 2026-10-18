@@ -1,0 +1,40 @@
+{
+  "id": "zkname.jd-cookie-local",
+  "name": "京东本地Cookie（实验版）",
+  "author": "@zkname",
+  "repo": "https://github.com/zkname/Rewrite",
+  "apps": [
+    {
+      "id": "zkname.jd-cookie-local",
+      "name": "京东本地Cookie",
+      "author": "@zkname",
+      "descs_html": [
+        "在 Loon 手动转换成功后查看 cookie 字段。这里只保存本地结果，不上传。",
+        "凭据敏感：不要截图分享、粘贴聊天或启用云备份。任务查询验收仍需在本机进行。"
+      ],
+      "keys": [
+        "jdCookieList",
+        "jdLocalStatusV1"
+      ],
+      "settings": [
+        {
+          "id": "jdCookieList",
+          "name": "已验证登录的 Cookie（敏感）",
+          "val": "[]",
+          "type": "textarea",
+          "autoGrow": false,
+          "rows": 10,
+          "desc": "复制所需账号的 cookie 字段，其格式为 pt_key=...; pt_pin=...;。不要复制整个 JSON 列表。"
+        },
+        {
+          "id": "jdLocalStatusV1",
+          "name": "最近转换状态",
+          "val": "{}",
+          "type": "textarea",
+          "rows": 4,
+          "desc": "LOGIN_VERIFIED 仅代表登录校验成功；queryVerification=pending 表示京豆查询尚未验收。"
+        }
+      ]
+    }
+  ]
+}
