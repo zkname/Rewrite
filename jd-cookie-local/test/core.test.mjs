@@ -27,6 +27,45 @@ test('capture accepts header case and both fields together, never assembles sepa
   assert.throws(()=>c.capture({...request,url:'https://blackhole.m.jd.com.evil.invalid/getinfo'},now),{code:'CAPTURE_URL'});
   assert.throws(()=>c.capture({...request,headers:{Cookie:'wskey=synthetic_one; wskey=synthetic_two'}},now),{code:'COOKIE_CONFLICT'});
 });
+test('capture accepts numeric and punctuation metadata names without retaining their values',()=>{
+  const headers={Cookie:'3AB9D23F7A4B3C9B=synthetic_device; device.id=synthetic_id; $Version=1; wskey=synthetic_wskey; pin=test;'};
+  assert.deepEqual(c.capture({url:'https://blackhole.m.jd.com/getinfo',headers},now),
+    {version:1,wskey:'synthetic_wskey',pin:'test',capturedAt:now});
+});
+
+test('capture ignores unrelated metadata values, flags and conflicts',()=>{
+  const headers={cookie:'tracking={"label": "test device"}; legacy-flag; tracking=other; wskey=synthetic_wskey==; pin=test%20one;'};
+  assert.deepEqual(c.capture({url:'https://perf.m.jd.com/app_monitor/test/getRule',headers},now),
+    {version:1,wskey:'synthetic_wskey==',pin:'test%20one',capturedAt:now});
+  assert.equal(c.capture({url:'https://blackhole.m.jd.com/getinfo',headers:{Cookie:'tracking=wskey=synthetic_wskey; legacy-flag; pin=%ZZ;'}},now),null);
+});
+
+test('capture normalizes paired quotes and optional whitespace only on selected credentials',()=>{
+  const headers={Cookie:['wskey = "synthetic_wskey=="; pin = "test%20one"','wskey=synthetic_wskey==; pin=test%20one']};
+  assert.deepEqual(c.capture({url:'https://blackhole.m.jd.com/getinfo',headers},now),
+    {version:1,wskey:'synthetic_wskey==',pin:'test%20one',capturedAt:now});
+});
+
+test('capture rejects ambiguous or invalid credentials even beside ignored metadata',()=>{
+  const bad=[
+    ['wskey=synthetic_one; wskey=synthetic_two','COOKIE_CONFLICT'],
+    ['wskey=synthetic_one; pin=first; pin=second','COOKIE_CONFLICT'],
+    ['wskey=','WSKEY_FORMAT'],['wskey','CAPTURE_COOKIE_FORMAT'],
+    ['wskey="synthetic_one','WSKEY_FORMAT'],['wskey=synthetic bad','WSKEY_FORMAT'],
+    ['wskey=synthetic_one; pin=','PIN_FORMAT'],['wskey=synthetic_one; pin=%ZZ','PIN_FORMAT'],
+    ['wskey=synthetic_one; pin="test','PIN_FORMAT'],['wskey=synthetic_one; pin=%0d','PIN_FORMAT']
+  ];
+  for(const [cookie,code] of bad)assert.throws(()=>c.capture({url:'https://blackhole.m.jd.com/getinfo',headers:{Cookie:'3device=value; '+cookie}},now),{code});
+  assert.throws(()=>c.capture({url:'https://blackhole.m.jd.com/getinfo',headers:{Cookie:'wskey=synthetic_one',COOKIE:'wskey=synthetic_two'}},now),{code:'COOKIE_CONFLICT'});
+});
+
+test('capture rejects non-string, oversized and control-bearing headers before extraction',()=>{
+  for(const Cookie of [17,null,{wskey:'synthetic_wskey'},['wskey=synthetic_wskey',17],
+    'wskey=synthetic_wskey; x='+ 'a'.repeat(32768), 'wskey=synthetic_wskey\r\nx-header:value',
+    'wskey=synthetic_wskey; x=\x00', 'wskey=synthetic_wskey; x=\x1f'])
+    assert.throws(()=>c.capture({url:'https://blackhole.m.jd.com/getinfo',headers:{Cookie}},now),{code:'CAPTURE_COOKIE_FORMAT'});
+});
+
 test('Set-Cookie parses arrays, newlines and combined Expires commas',()=>{
   for(const headers of [
     {'set-cookie':['pt_key=synthetic_key; Path=/; Secure','pt_pin=test%20one; Domain=.jd.com; HttpOnly']},

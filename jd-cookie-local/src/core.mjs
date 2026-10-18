@@ -104,10 +104,27 @@ export function createCore() {
       /^https:\/\/perf\.m\.jd\.com\/app_monitor\/\w+\/getRule(?:[?#]|$)/.test(request.url)), 'CAPTURE_URL');
     const headers = headerValues(request.headers, 'cookie');
     if (!headers.length) return null;
-    const values = pairs(headers.join('; '));
-    if (!values.wskey) return null;
+    check(headers.every(value => typeof value === 'string' && value.length <= 32768), 'CAPTURE_COOKIE_FORMAT');
+    const cookie = headers.join('; ');
+    check(cookie.length <= 32768 && !/[\x00-\x08\x0a-\x1f\x7f]/.test(cookie), 'CAPTURE_COOKIE_FORMAT');
+    // App metadata is not our credential format. Inspect only exact wskey/pin fields;
+    // never persist or forward unrelated values, or combine separate requests.
+    const values = Object.create(null);
+    for (const field of cookie.split(';')) {
+      const index = field.indexOf('='), name = (index < 0 ? field : field.slice(0,index)).trim();
+      if (name !== 'wskey' && name !== 'pin') continue;
+      check(index >= 0, 'CAPTURE_COOKIE_FORMAT');
+      let value = field.slice(index + 1).trim();
+      if (value.length >= 2 && value.startsWith('"') && value.endsWith('"')) value = value.slice(1,-1);
+      check(!Object.prototype.hasOwnProperty.call(values,name) || values[name] === value, 'COOKIE_CONFLICT');
+      values[name] = value;
+    }
+    if (!Object.prototype.hasOwnProperty.call(values,'wskey')) return null;
     check(/^[A-Za-z0-9._~+/=-]{8,4096}$/.test(values.wskey), 'WSKEY_FORMAT');
-    if (values.pin) pinIdentity(values.pin);
+    if (Object.prototype.hasOwnProperty.call(values,'pin')) {
+      check(!/["\\]/.test(values.pin), 'PIN_FORMAT');
+      pinIdentity(values.pin);
+    }
     return {version:1, wskey:values.wskey, pin:values.pin || null, capturedAt:now};
   }
   function parseSetCookie(headers, now) {

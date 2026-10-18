@@ -8,6 +8,8 @@
   const text = {CAPTURED:'已捕获 App 凭据。请手动运行“京东 Cookie 转换”；十五分钟内有效。',
     LOGIN_VERIFIED:'Cookie 登录校验成功，已保存到 BoxJs 本地 jdCookieList。任务查询验收尚未完成。',
     CAPTURE_REQUIRED:'请先打开京东 App 重新捕获。',CAPTURE_EXPIRED:'捕获已过期，请重新打开京东 App。',
+    CAPTURE_COOKIE_FORMAT:'捕获未完成：请求中的 Cookie 头格式不受支持（CAPTURE_COOKIE_FORMAT）。原请求已放行。',
+    WSKEY_FORMAT:'捕获的 App 凭据格式无效（WSKEY_FORMAT），请重新打开京东 App 捕获。',
     CONVERSION_BUSY:'已有转换正在运行。',CONVERSION_COOLDOWN:'同一凭据十五分钟内不重复转换。'};
   const env = {
     request:typeof $request === 'undefined' ? null : $request,

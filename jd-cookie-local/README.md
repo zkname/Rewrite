@@ -6,10 +6,23 @@
 脚本只有三个固定 HTTPS 外联：京东 genToken、appjmp、登录状态校验。签名、MD5、Base64 全在本地。
 没有第三方签名服务、远程算法、自动上传、Telegram 推送、自动转换定时或青龙管理操作。
 
+如果看到“自动提交WSKEY”开关，请核对是否打开了旧 BoxJs 应用“京东WSKEY”。新版应用名为
+“京东本地Cookie”，只有 Cookie 列表和转换状态两项，没有自动提交开关，也不读取旧的
+`WSKEY_AUTO_UPLOAD`、`WSKEY_TG_USER_ID` 或 `WSKEY_TG_BOT_TOKEN` 配置。
+原版 `main/get_jd_wskey.js` 的注释和配置项仍有自动提交说明；它不是此测试版本。
+这些旧说明本身不能证明实际发生过上传。请停用旧捕获规则，并使用下方固定提交的插件。
+
 ## 手机操作
 
+捕获兼容修复：打开 App 即出现 `COOKIE_FORMAT` 时，旧版可能把设备、统计等无关
+Cookie 的格式当成凭据格式来校验。现已改为只提取并校验同一请求的 `wskey/pin`，仍拒绝冲突凭据、
+非法值、控制字符及超长请求头；捕获不会发起转换请求。
+若原插件地址含 `e5cf030...` 等固定提交号，刷新仍是旧版，请改用下方测试分支订阅地址。
+后续在 Loon 手动更新该插件即可取得已发布配置；配置内部的两个脚本入口仍固定到同一审查提交。
+更新后重新打开 App，出现“已捕获”再手动转换。真实手机验证仍未完成。
+
 1. 在 Loon 停用原 WSKEY 捕获规则，避免与新规则重复执行。只安装下列一个插件：
-   [新版插件](get_jd_cookie.plugin)适用于 Loon 3.5.1 Build 983+；更早版本使用[旧版插件](get_jd_cookie.legacy.plugin)。
+   [新版插件](https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/feat/jd-cookie-local/jd-cookie-local/get_jd_cookie.plugin)适用于 Loon 3.5.1 Build 983+；更早版本使用[旧版插件](https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/feat/jd-cookie-local/jd-cookie-local/get_jd_cookie.legacy.plugin)。
    插件中的脚本 URL 固定到经过测试的提交，见 `release.json`。首次下载是安装步骤，不是运行时获取算法。
 2. 捕获需要 Loon 已正常启用 MitM，并由用户在系统中完成证书安装和信任。
    仅解密 `blackhole.m.jd.com` 和 `perf.m.jd.com`。脚本自身 HTTPS 请求明确启用证书校验。
@@ -54,6 +67,7 @@ node --test jd-cookie-local/test/*.test.mjs
 `test/vectors.json` 为已提交的合成向量；`python jd-cookie-local/test/reference-sign.py` 可独立再生成其参考结果。
 检查 source-manifest、static-audit 和 isolation-report 后，才可以发布新的测试脚本提交。
 发布配置使用 `node jd-cookie-local/tools/write-loon-config.mjs <已审查的40位脚本提交>`，不得引用可变 main。
+按用户最新要求，后续修改先保留在本地；GitHub 推送、发布和合并均须另行明确授权，不自动执行。
 隔离构建文件及明确的源文件清单在 tools 中；不把整库无关脚本打包进测试镜像。
 
 来源和适用声明见 [NOTICE.md](NOTICE.md)，本地协议参数使用 Android 11.1.4，可能已经失效。

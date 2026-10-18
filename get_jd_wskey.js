@@ -111,10 +111,27 @@ function createCore() {
       /^https:\/\/perf\.m\.jd\.com\/app_monitor\/\w+\/getRule(?:[?#]|$)/.test(request.url)), 'CAPTURE_URL');
     const headers = headerValues(request.headers, 'cookie');
     if (!headers.length) return null;
-    const values = pairs(headers.join('; '));
-    if (!values.wskey) return null;
+    check(headers.every(value => typeof value === 'string' && value.length <= 32768), 'CAPTURE_COOKIE_FORMAT');
+    const cookie = headers.join('; ');
+    check(cookie.length <= 32768 && !/[\x00-\x08\x0a-\x1f\x7f]/.test(cookie), 'CAPTURE_COOKIE_FORMAT');
+    // App metadata is not our credential format. Inspect only exact wskey/pin fields;
+    // never persist or forward unrelated values, or combine separate requests.
+    const values = Object.create(null);
+    for (const field of cookie.split(';')) {
+      const index = field.indexOf('='), name = (index < 0 ? field : field.slice(0,index)).trim();
+      if (name !== 'wskey' && name !== 'pin') continue;
+      check(index >= 0, 'CAPTURE_COOKIE_FORMAT');
+      let value = field.slice(index + 1).trim();
+      if (value.length >= 2 && value.startsWith('"') && value.endsWith('"')) value = value.slice(1,-1);
+      check(!Object.prototype.hasOwnProperty.call(values,name) || values[name] === value, 'COOKIE_CONFLICT');
+      values[name] = value;
+    }
+    if (!Object.prototype.hasOwnProperty.call(values,'wskey')) return null;
     check(/^[A-Za-z0-9._~+/=-]{8,4096}$/.test(values.wskey), 'WSKEY_FORMAT');
-    if (values.pin) pinIdentity(values.pin);
+    if (Object.prototype.hasOwnProperty.call(values,'pin')) {
+      check(!/["\\]/.test(values.pin), 'PIN_FORMAT');
+      pinIdentity(values.pin);
+    }
     return {version:1, wskey:values.wskey, pin:values.pin || null, capturedAt:now};
   }
   function parseSetCookie(headers, now) {
@@ -251,7 +268,7 @@ async function runWorkflow(core, env) {
     return {status:'login-verified',accounts:previous.length,queryVerification:'pending'};
   } catch (error) {
     // Only our fixed codes survive; never serialize the actual exception or response.
-    const safe = new Set(['INPUT_FORMAT','INPUT_ENCODING','SIGN_INPUT','PIN_FORMAT','COOKIE_FORMAT','COOKIE_CONFLICT','HEADER_FORMAT','CAPTURE_URL','WSKEY_FORMAT',
+    const safe = new Set(['INPUT_FORMAT','INPUT_ENCODING','SIGN_INPUT','PIN_FORMAT','COOKIE_FORMAT','COOKIE_CONFLICT','HEADER_FORMAT','CAPTURE_URL','CAPTURE_COOKIE_FORMAT','WSKEY_FORMAT',
       'SET_COOKIE_FORMAT','COOKIE_EXPIRED','COOKIE_DOMAIN','PT_KEY_REJECTED','TOKEN_REJECTED','LOGIN_UNCONFIRMED','ACCOUNT_MISMATCH','ENDPOINT_NOT_ALLOWED',
       'STORAGE_FORMAT','STORAGE_WRITE_FAILED','MODE_REQUIRED','CAPTURE_REQUIRED','CAPTURE_EXPIRED','STATE_FORMAT','CONVERSION_BUSY','CONVERSION_COOLDOWN',
       'RANDOM_SOURCE','CONVERSION_SUPERSEDED','RESPONSE_FORMAT','RATE_LIMITED','HTTP_REJECTED','RESPONSE_JSON','ACCOUNT_LIMIT','NETWORK_ERROR','NETWORK_TIMEOUT']);
@@ -272,6 +289,8 @@ async function runWorkflow(core, env) {
   const text = {CAPTURED:'已捕获 App 凭据。请手动运行“京东 Cookie 转换”；十五分钟内有效。',
     LOGIN_VERIFIED:'Cookie 登录校验成功，已保存到 BoxJs 本地 jdCookieList。任务查询验收尚未完成。',
     CAPTURE_REQUIRED:'请先打开京东 App 重新捕获。',CAPTURE_EXPIRED:'捕获已过期，请重新打开京东 App。',
+    CAPTURE_COOKIE_FORMAT:'捕获未完成：请求中的 Cookie 头格式不受支持（CAPTURE_COOKIE_FORMAT）。原请求已放行。',
+    WSKEY_FORMAT:'捕获的 App 凭据格式无效（WSKEY_FORMAT），请重新打开京东 App 捕获。',
     CONVERSION_BUSY:'已有转换正在运行。',CONVERSION_COOLDOWN:'同一凭据十五分钟内不重复转换。'};
   const env = {
     request:typeof $request === 'undefined' ? null : $request,

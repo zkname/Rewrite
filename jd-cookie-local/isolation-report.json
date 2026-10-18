@@ -1,8 +1,8 @@
 {
-  "bundleSha256": "3417873b3c5b1c55422189892e4dc28594e02e6747b1347aeb443b1756357996",
+  "bundleSha256": "489bbe039368f63fd6d5f891bd0fb4c7ca48624b63635f7c0f6204318366b5a3",
   "baseImage": "whyour/qinglong@sha256:3e3971e78edbb5a6a6900bdfb7cd37352a535416f7ad2451747e601a7558d400",
-  "tests": 66,
-  "passed": 66,
+  "tests": 72,
+  "passed": 72,
   "failed": 0,
   "referenceVectors": 32,
   "container": {
@@ -17,7 +17,7 @@
     "securityOpt": [
       "no-new-privileges"
     ],
-    "image": "sha256:0f2a4b7bfd727d7faae92bcff892f0abec19ca75c974c2fe5ff193ae816ac71c"
+    "image": "sha256:9e8dbb5b5783c4e3846bd69a9369fdbdc4a5492e87c88276cded6b17ce84f216"
   },
   "telemetry": {
     "events": [],
@@ -25,7 +25,7 @@
     "node": "v24.18.1",
     "uid": 65534
   },
-  "tapSha256": "992763e6dff841955a4083cce664a936fb2859442350c7a93166c3c8e00d57ee",
+  "tapSha256": "94fba69932626d44767a308504617c05d7a078df2c2a8357bb65b72c787fda00",
   "oracleSha256": "583499044ef92189d0ffb5589b5ddec2e728b63186ea4cc7c2ea3f654bf44723",
   "credentialsUsed": "synthetic-only",
   "live": {

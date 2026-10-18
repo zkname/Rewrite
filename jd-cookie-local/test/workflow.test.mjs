@@ -26,6 +26,19 @@ test('capture passes unchanged request, no HTTP, removes all cross-request ident
   t.env.request={...request(),headers:{Cookie:'pin=second;'}};await runWorkflow(c,t.env);
   assert.equal(JSON.parse(t.store.get(keys.capture)).pin,null);
 });
+test('capture ignores App metadata, preserves request and previous state on invalid credentials',async()=>{
+  const t=setup();
+  t.env.request={...request(),headers:{Cookie:'3device=one; tracking={"device": "test phone"}; wskey=synthetic_wskey; pin=test;'}};
+  const before=JSON.stringify(t.env.request);
+  assert.equal((await runWorkflow(c,t.env)).status,'captured');assert.equal(JSON.stringify(t.env.request),before);
+  const saved=t.store.get(keys.capture);
+  t.env.request={...request(),headers:{Cookie:'3device=one; wskey=synthetic_one; wskey=synthetic_two;'}};
+  assert.equal((await runWorkflow(c,t.env)).code,'COOKIE_CONFLICT');assert.equal(t.store.get(keys.capture),saved);
+  t.env.request={...request(),headers:{Cookie:'wskey=synthetic_wskey\r\nx-header:value'}};
+  assert.equal((await runWorkflow(c,t.env)).code,'CAPTURE_COOKIE_FORMAT');assert.equal(t.store.get(keys.capture),saved);
+  assert.equal(t.calls.length,0);assert.equal(t.getDone(),3);assert.ok(!JSON.stringify(t.notifications).includes('synthetic_'));
+});
+
 test('manual conversion validates login, saves local result and clears only consumed capture',async()=>{
   const t=setup();await t.capture();const result=await runWorkflow(c,t.env);
   assert.equal(result.status,'login-verified');assert.equal(result.queryVerification,'pending');assert.equal(t.calls.length,3);
@@ -82,12 +95,14 @@ test('login failure never saves a newly obtained cookie',async()=>{
 test('bundled Loon adapter forwards request and calls done exactly once without network or console',async()=>{
   const source=fs.readFileSync(new URL('../../get_jd_wskey.js',import.meta.url),'utf8');
   const store=new Map();let done=0,notify=0;
-  const context=vm.createContext({$request:request(),$argument:'',Date,Math,Promise,
+  const appRequest={...request(),headers:{Cookie:'3device=one; tracking={"device": "test phone"}; wskey=synthetic_wskey; pin=test;'}};
+  const before=JSON.stringify(appRequest);
+  const context=vm.createContext({$request:appRequest,$argument:'',Date,Math,Promise,
     $persistentStore:{read:k=>store.get(k),write:(v,k)=>{store.set(k,v);return true;}},
     $notification:{post:()=>{notify++;}},$done:args=>{assert.equal(Object.keys(args).length,0);done++;},
     $httpClient:{get:()=>assert.fail('unexpected network'),post:()=>assert.fail('unexpected network')},
     console:{log:()=>assert.fail('unexpected log')},setTimeout:()=>assert.fail('unexpected timer')},
     {codeGeneration:{strings:false,wasm:false}});
   new vm.Script(source).runInContext(context);await new Promise(resolve=>setImmediate(resolve));
-  assert.equal(done,1);assert.equal(notify,1);assert.ok(store.has(keys.capture));
+  assert.equal(done,1);assert.equal(notify,1);assert.ok(store.has(keys.capture));assert.equal(JSON.stringify(appRequest),before);
 });
