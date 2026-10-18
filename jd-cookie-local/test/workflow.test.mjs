@@ -1,108 +1,118 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import fs from 'node:fs';
-import vm from 'node:vm';
 import {createCore} from '../src/core.mjs';
 import {runWorkflow} from '../src/runner.mjs';
-const c=createCore(),epoch=Date.parse('2026-10-19T00:00:00Z');
-const request=(wskey='synthetic_wskey',pin='test')=>({url:'https://blackhole.m.jd.com/getinfo',headers:{Cookie:`wskey=${wskey};${pin?' pin='+pin+';':''}`}});
-const keys={capture:'jdLocalCaptureV1',state:'jdLocalConversionV1',cookies:'jdCookieList'};
-function setup(overrides={}){
-  const store=new Map(),notifications=[],calls=[];let clock=epoch,done=0;
-  const env={request:null,mode:'convert',now:()=>clock,random:()=>0.5,read:key=>store.get(key),write:(v,k)=>{store.set(k,v);return true;},
-    wait:async()=>{},notify:(...args)=>notifications.push(args),done:value=>{assert.deepEqual(value,{});done++;},
-    http:async options=>{calls.push(options);
-      if(options.url.startsWith('https://api.m.jd.com/'))return {status:200,headers:{},body:'{"tokenKey":"synthetic_token"}'};
-      if(options.url.startsWith('https://un.m.jd.com/'))return {status:302,headers:{'Set-Cookie':['pt_key=synthetic_key; Secure','pt_pin=test; HttpOnly']},body:''};
-      return {status:200,headers:{},body:'{"retcode":"0","data":{"userInfo":{"baseInfo":{"curPin":"test"}}}}'};
-    },...overrides};
-  const put=(key,value)=>store.set(key,JSON.stringify(value));
-  const capture=async(wskey,pin)=>{env.request=request(wskey,pin);const result=await runWorkflow(c,env);env.request=null;return result;};
-  return {env,store,put,notifications,calls,capture,setTime:t=>{clock=t;},getDone:()=>done};
+const core=createCore(),epoch=1792368000000;
+const keys={capture:'jdWebCaptureV1',status:'jdLocalStatusV1',state:'jdWebVerifyV1',cookies:'jdCookieList'};
+const cookie=(name='test',key='synthetic_key')=>`pt_key=${key}; pt_pin=${name};`;
+function setup(overrides={}) {
+  const store=new Map(),notices=[],calls=[];let time=epoch,done=0,random=0;
+  const env={request:null,mode:'status',now:()=>time,random:()=>++random/1000,
+    read:k=>store.get(k),write:(v,k)=>{store.set(k,v);return true;},wait:async()=>{},
+    notify:(...v)=>notices.push(v),done:v=>{assert.deepEqual(v,{});done++;},
+    http:async o=>{calls.push(o);return {status:200,body:'{"retcode":0,"data":{"userInfo":{"baseInfo":{"curPin":"test"}}}}'};},...overrides};
+  const run=async(mode='status')=>{env.request=null;env.mode=mode;return runWorkflow(core,env);};
+  const capture=async(Cookie=cookie())=>{
+    env.request={url:'https://my.m.jd.com/index.html?secret=synthetic_query',headers:Cookie===null?{}:{Cookie}};
+    const before=JSON.stringify(env.request),r=await runWorkflow(core,env);assert.equal(JSON.stringify(env.request),before);env.request=null;return r;
+  };
+  return {env,store,notices,calls,run,capture,put:(k,v)=>store.set(k,JSON.stringify(v)),get:k=>JSON.parse(store.get(k)||'null'),
+    time:t=>{time=t;},done:()=>done};
 }
-test('capture passes unchanged request, no HTTP, removes all cross-request identity merging',async()=>{
-  const t=setup();await t.capture();assert.equal(t.calls.length,0);assert.equal(t.getDone(),1);
-  await t.capture('synthetic_new',null);assert.equal(JSON.parse(t.store.get(keys.capture)).pin,null);
-  t.env.request={...request(),headers:{Cookie:'pin=second;'}};await runWorkflow(c,t.env);
-  assert.equal(JSON.parse(t.store.get(keys.capture)).pin,null);
+test('status before any capture is explicit and local-only',async()=>{
+  const t=setup();assert.equal((await t.run()).status,'WEB_NOT_SEEN');assert.equal(t.calls.length,0);
+  assert.equal(t.get(keys.status).lastRequest,'WEB_NOT_SEEN');assert.equal(t.done(),1);
 });
-test('capture ignores App metadata, preserves request and previous state on invalid credentials',async()=>{
-  const t=setup();
-  t.env.request={...request(),headers:{Cookie:'3device=one; tracking={"device": "test phone"}; wskey=synthetic_wskey; pin=test;'}};
-  const before=JSON.stringify(t.env.request);
-  assert.equal((await runWorkflow(c,t.env)).status,'captured');assert.equal(JSON.stringify(t.env.request),before);
-  const saved=t.store.get(keys.capture);
-  t.env.request={...request(),headers:{Cookie:'3device=one; wskey=synthetic_one; wskey=synthetic_two;'}};
-  assert.equal((await runWorkflow(c,t.env)).code,'COOKIE_CONFLICT');assert.equal(t.store.get(keys.capture),saved);
-  t.env.request={...request(),headers:{Cookie:'wskey=synthetic_wskey\r\nx-header:value'}};
-  assert.equal((await runWorkflow(c,t.env)).code,'CAPTURE_COOKIE_FORMAT');assert.equal(t.store.get(keys.capture),saved);
-  assert.equal(t.calls.length,0);assert.equal(t.getDone(),3);assert.ok(!JSON.stringify(t.notifications).includes('synthetic_'));
+test('missing and incomplete browser credentials produce feedback without cross-request merging',async()=>{
+  const t=setup();assert.equal((await t.capture(null)).status,'WEB_NO_COOKIE');
+  assert.equal((await t.capture('pt_key=synthetic_key;')).status,'WEB_INCOMPLETE');
+  assert.equal((await t.capture('pt_pin=test;')).status,'WEB_INCOMPLETE');
+  assert.equal(t.get(keys.capture),null);assert.equal((await t.run('verify')).code,'WEB_CAPTURE_REQUIRED');assert.equal(t.calls.length,0);
+  assert.ok(t.notices.some(n=>n[0]==='WEB_INCOMPLETE'));
 });
-
-test('manual conversion validates login, saves local result and clears only consumed capture',async()=>{
-  const t=setup();await t.capture();const result=await runWorkflow(c,t.env);
-  assert.equal(result.status,'login-verified');assert.equal(result.queryVerification,'pending');assert.equal(t.calls.length,3);
-  assert.deepEqual(JSON.parse(t.store.get(keys.cookies)),[{userName:'test',cookie:'pt_key=synthetic_key; pt_pin=test;'}]);
-  assert.equal(JSON.parse(t.store.get(keys.capture)),null);assert.equal(t.getDone(),2);
-  assert.ok(!JSON.stringify(t.notifications).includes('synthetic_'));assert.ok(!JSON.stringify(t.notifications).includes('pt_key'));
+test('complete browser capture stages only needed fields, without verifying or overwriting saved cookies',async()=>{
+  const t=setup();const old=[{userName:'old',cookie:cookie('old','previous_key')}];t.put(keys.cookies,old);
+  assert.equal((await t.capture('3device=x; tracking={"name": "test phone"}; '+cookie())).status,'WEB_CAPTURED');
+  assert.deepEqual(t.get(keys.capture).account,{userName:'test',cookie:cookie()});assert.deepEqual(t.get(keys.cookies),old);
+  assert.equal(t.calls.length,0);assert.ok(!JSON.stringify(t.notices).includes('synthetic_'));
+  assert.ok(!t.store.get(keys.status).includes('synthetic_'));assert.ok(!JSON.stringify([...t.store.values()]).includes('synthetic_query'));
 });
-test('missing pin is resolved only by the JD response; mismatch never replaces existing cookies',async()=>{
-  const t=setup();await t.capture('synthetic_wskey',null);assert.equal((await runWorkflow(c,t.env)).status,'login-verified');
-  const other=setup();other.put(keys.cookies,[{userName:'old',cookie:'pt_key=previous_key; pt_pin=old;'}]);
-  await other.capture('synthetic_other','other');assert.equal((await runWorkflow(c,other.env)).code,'ACCOUNT_MISMATCH');
-  assert.equal(JSON.parse(other.store.get(keys.cookies))[0].userName,'old');assert.equal(other.calls.length,2);
+test('repeat capture is throttled but manual status always reports and later refresh notifies again',async()=>{
+  const t=setup();await t.capture();const id=t.get(keys.capture).id;await t.capture();assert.equal(t.notices.length,1);
+  assert.equal(t.get(keys.capture).id,id);await t.run();assert.equal(t.notices.length,2);
+  t.time(epoch+60000);await t.capture();assert.equal(t.notices.length,3);
 });
-test('expired capture is cleared; future timestamps rejected before HTTP',async()=>{
-  for(const when of [epoch+900000,epoch-1]){const t=setup();await t.capture();t.setTime(when);
-    assert.equal((await runWorkflow(c,t.env)).code,'CAPTURE_EXPIRED');assert.equal(t.calls.length,0);assert.equal(JSON.parse(t.store.get(keys.capture)),null);}
+test('account change notifies immediately and replaces only the staged candidate',async()=>{
+  const t=setup();await t.capture();await t.capture(cookie('other','second_key'));
+  assert.equal(t.get(keys.capture).account.userName,'other');assert.equal(t.notices.length,2);assert.equal(t.get(keys.cookies),null);
 });
-test('failed conversion leaves previous good cookie and blocks same-key immediate replay',async()=>{
-  const t=setup({http:async()=>{throw Error('synthetic_wskey should never be logged');}});
-  t.put(keys.cookies,[{userName:'test',cookie:'pt_key=previous_key; pt_pin=test;'}]);await t.capture();
-  assert.equal((await runWorkflow(c,t.env)).code,'INTERNAL_ERROR');
-  assert.equal((await runWorkflow(c,t.env)).code,'CONVERSION_COOLDOWN');
-  assert.ok(t.store.get(keys.cookies).includes('previous_key'));assert.ok(!JSON.stringify(t.notifications).includes('synthetic_'));
+test('manual login verification sends one request and writes the compatible output only on success',async()=>{
+  const t=setup();t.put(keys.cookies,[{userName:'other',cookie:cookie('other','previous_key')}]);await t.capture();
+  assert.equal((await t.run('verify')).status,'LOGIN_VERIFIED');assert.equal(t.calls.length,1);
+  assert.equal(t.get(keys.cookies).length,2);assert.deepEqual(t.get(keys.cookies)[1],{userName:'test',cookie:cookie()});
+  assert.equal(t.get(keys.status).queryVerification,'pending');assert.equal(t.get(keys.status).loginVerification,'verified');
+  assert.equal((await t.run()).status,'LOGIN_VERIFIED');assert.ok(!JSON.stringify(t.notices).includes('synthetic_'));
 });
-test('concurrent invocations allow one conversion and fence a superseded owner',async()=>{
-  let resolveWait;const t=setup({wait:()=>new Promise(resolve=>{resolveWait=resolve;})});await t.capture();
-  const first=runWorkflow(c,t.env);await Promise.resolve();
-  assert.equal((await runWorkflow(c,t.env)).code,'CONVERSION_BUSY');
-  resolveWait();assert.equal((await first).status,'login-verified');assert.equal(t.calls.length,3);
-  const lost=setup({wait:async()=>{lost.put(keys.state,{nonce:'other',status:'inflight',startedAt:epoch});}});await lost.capture();
-  assert.equal((await runWorkflow(c,lost.env)).code,'CONVERSION_SUPERSEDED');assert.equal(lost.calls.length,0);
+test('same-account success replaces its record without duplicating accounts',async()=>{
+  const t=setup();t.put(keys.cookies,[{userName:'test',cookie:cookie('test','previous_key')}]);await t.capture();await t.run('verify');
+  assert.deepEqual(t.get(keys.cookies),[{userName:'test',cookie:cookie()}]);
 });
-test('a capture arriving mid-conversion survives completion',async()=>{
-  const t=setup();await t.capture();const original=t.env.http;
-  t.env.http=async options=>{if(options.url.startsWith('https://me-api'))t.put(keys.capture,{version:1,wskey:'new_capture',pin:'second',capturedAt:epoch+1});return original(options);};
-  await runWorkflow(c,t.env);assert.equal(JSON.parse(t.store.get(keys.capture)).wskey,'new_capture');
+test('a later browser visit does not reuse an expired login-verification result',async()=>{
+  const t=setup();await t.capture();await t.run('verify');t.time(epoch+900000);
+  assert.equal((await t.capture()).status,'WEB_CAPTURED');assert.equal(t.get(keys.capture).verifiedAt,null);
 });
-test('storage failure before HTTP and before output commit cannot be reported as success',async()=>{
-  const t=setup({write:()=>false});assert.equal((await t.capture()).code,'STORAGE_WRITE_FAILED');assert.equal(t.calls.length,0);
-  const later=setup();await later.capture();const write=later.env.write;
-  later.env.write=(v,k)=>k===keys.cookies?false:write(v,k);
-  assert.equal((await runWorkflow(c,later.env)).code,'STORAGE_WRITE_FAILED');assert.equal(later.store.has(keys.cookies),false);
-});
-for(const [status,body,code] of [[302,'','HTTP_REJECTED'],[429,'','RATE_LIMITED'],[200,'globalThis.evil=1','RESPONSE_JSON'],[200,'{}','TOKEN_REJECTED'],[200,'x'.repeat(262145),'RESPONSE_FORMAT']])
-  test('token response '+status+'/'+code+' is rejected without retries',async()=>{
-    let calls=0;const t=setup({http:async()=>{calls++;return {status,body,headers:{}};}});await t.capture();
-    assert.equal((await runWorkflow(c,t.env)).code,code);assert.equal(calls,1);assert.equal(globalThis.evil,undefined);
+for(const [response,code] of [
+  [{status:200,body:'{"retcode":1001}'},'LOGIN_UNCONFIRMED'],[{status:200,body:'{}'},'LOGIN_UNCONFIRMED'],
+  [{status:200,body:'{"retcode":0,"data":{"userInfo":{"baseInfo":{"curPin":"other"}}}}'},'ACCOUNT_MISMATCH'],
+  [{status:302,body:''},'HTTP_REJECTED'],[{status:429,body:''},'RATE_LIMITED'],
+  [{status:200,body:'globalThis.evil=true'},'RESPONSE_JSON'],[{status:200,body:'x'.repeat(262145)},'RESPONSE_FORMAT']])
+  test('failed verification '+code+' preserves old data without retry',async()=>{
+    let count=0;const t=setup({http:async()=>{count++;return response;}}),old=[{userName:'test',cookie:cookie('test','previous_key')}];
+    t.put(keys.cookies,old);await t.capture();assert.equal((await t.run('verify')).code,code);
+    assert.deepEqual(t.get(keys.cookies),old);assert.equal(count,1);assert.equal((await t.run('verify')).code,'VERIFY_COOLDOWN');assert.equal(count,1);
+    assert.equal(globalThis.evil,undefined);
   });
-test('login failure never saves a newly obtained cookie',async()=>{
-  const t=setup();await t.capture();const original=t.env.http;
-  t.env.http=options=>options.url.startsWith('https://me-api')?{status:200,headers:{},body:'{"retcode":1001}'}:original(options);
-  assert.equal((await runWorkflow(c,t.env)).code,'LOGIN_UNCONFIRMED');assert.equal(t.store.has(keys.cookies),false);
+test('unknown exceptions and forged storage status never leak details into notifications',async()=>{
+  const t=setup({http:async()=>{throw Error('synthetic_key');}});await t.capture();
+  assert.equal((await t.run('verify')).code,'INTERNAL_ERROR');assert.ok(!JSON.stringify(t.notices).includes('synthetic_'));
+  const bad=setup();bad.put('jdWebObservationV1',{code:'synthetic_key',at:epoch});
+  assert.equal((await bad.run()).code,'STORAGE_FORMAT');assert.ok(!JSON.stringify(bad.notices).includes('synthetic_'));
 });
-test('bundled Loon adapter forwards request and calls done exactly once without network or console',async()=>{
-  const source=fs.readFileSync(new URL('../../get_jd_wskey.js',import.meta.url),'utf8');
-  const store=new Map();let done=0,notify=0;
-  const appRequest={...request(),headers:{Cookie:'3device=one; tracking={"device": "test phone"}; wskey=synthetic_wskey; pin=test;'}};
-  const before=JSON.stringify(appRequest);
-  const context=vm.createContext({$request:appRequest,$argument:'',Date,Math,Promise,
-    $persistentStore:{read:k=>store.get(k),write:(v,k)=>{store.set(k,v);return true;}},
-    $notification:{post:()=>{notify++;}},$done:args=>{assert.equal(Object.keys(args).length,0);done++;},
-    $httpClient:{get:()=>assert.fail('unexpected network'),post:()=>assert.fail('unexpected network')},
-    console:{log:()=>assert.fail('unexpected log')},setTimeout:()=>assert.fail('unexpected timer')},
-    {codeGeneration:{strings:false,wasm:false}});
-  new vm.Script(source).runInContext(context);await new Promise(resolve=>setImmediate(resolve));
-  assert.equal(done,1);assert.equal(notify,1);assert.ok(store.has(keys.capture));assert.equal(JSON.stringify(appRequest),before);
+for(const mode of ['status','verify'])test(mode+' expires and clears old or future-dated candidates without network',async()=>{
+  for(const time of [epoch+900000,epoch-1]){
+    const t=setup();await t.capture();t.time(time);const r=await t.run(mode);
+    assert.equal(r.code||r.status,'WEB_EXPIRED');assert.equal(t.get(keys.capture),null);assert.equal(t.calls.length,0);
+  }
+});
+test('capture conflicts preserve previous candidate and make failure observable',async()=>{
+  const t=setup();await t.capture();const before=t.store.get(keys.capture);
+  assert.equal((await t.capture(cookie()+'pt_pin=other')).code,'COOKIE_CONFLICT');
+  assert.equal(t.store.get(keys.capture),before);assert.equal(t.get(keys.status).lastRequest,'COOKIE_CONFLICT');assert.equal(t.calls.length,0);
+});
+test('missing metadata never imports old wskey storage',async()=>{
+  const t=setup();t.put('jdLocalCaptureV1',{version:1,wskey:'synthetic_wskey',pin:'test',capturedAt:epoch});
+  assert.equal((await t.run()).status,'WEB_NOT_SEEN');assert.equal((await t.run('verify')).code,'WEB_CAPTURE_REQUIRED');
+});
+test('storage failure cannot be reported as saved and does not leak the candidate',async()=>{
+  const t=setup({write:()=>false});assert.equal((await t.capture()).code,'STORAGE_WRITE_FAILED');assert.equal(t.calls.length,0);
+  const later=setup();await later.capture();const write=later.env.write;later.env.write=(v,k)=>k===keys.cookies?false:write(v,k);
+  assert.equal((await later.run('verify')).code,'STORAGE_WRITE_FAILED');assert.equal(later.get(keys.cookies),null);
+  assert.ok(!later.notices.some(n=>n[0]==='LOGIN_VERIFIED'));
+});
+test('overlapping verification uses one request and fences a superseded owner',async()=>{
+  let resume;const t=setup({wait:()=>new Promise(r=>{resume=r;})});await t.capture();
+  const first=t.run('verify');await Promise.resolve();assert.equal((await t.run('verify')).code,'VERIFY_BUSY');
+  resume();assert.equal((await first).status,'LOGIN_VERIFIED');assert.equal(t.calls.length,1);
+  const other=setup({wait:async()=>{other.put(keys.state,{nonce:'different',startedAt:epoch,status:'inflight'});}});await other.capture();
+  assert.equal((await other.run('verify')).code,'VERIFY_SUPERSEDED');assert.equal(other.calls.length,0);
+});
+test('changing account during verification discards stale results even if capture IDs collide',async()=>{
+  const t=setup({random:()=>0.5});await t.capture();
+  t.env.http=async()=>{await t.capture(cookie('other','other_key'));return {status:200,body:'{"retcode":0}'};};
+  assert.equal((await t.run('verify')).code,'CAPTURE_CHANGED');assert.equal(t.get(keys.cookies),null);
+  assert.equal(t.get(keys.capture).account.userName,'other');
+});
+test('malformed existing account records stop a write rather than replacing unrelated data',async()=>{
+  const t=setup();t.put(keys.cookies,[{userName:'different',cookie:cookie()}]);const before=t.store.get(keys.cookies);await t.capture();
+  assert.equal((await t.run('verify')).code,'STORAGE_FORMAT');assert.equal(t.store.get(keys.cookies),before);
 });

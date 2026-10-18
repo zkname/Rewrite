@@ -1,9 +1,10 @@
 import fs from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-const root=new URL('../../',import.meta.url),out=new URL('.local/loon-container/',root);
+const root=new URL('../../',import.meta.url),out=new URL('.local/loon-web-container/',root);
 const paths=['get_jd_wskey.js','jd-cookie-local/src/core.mjs','jd-cookie-local/src/runner.mjs',
+  'jd-cookie-local/src/adapter.js',
   'jd-cookie-local/test/core.test.mjs','jd-cookie-local/test/workflow.test.mjs','jd-cookie-local/test/adapter.test.mjs',
-  'jd-cookie-local/test/vectors.json','jd-cookie-local/test/reference-sign.py',
+  'jd-cookie-local/test/config.test.mjs','jd-cookie-local/tools/loon-config.mjs',
   'jd-cookie-local/tools/isolation-guard.mjs','jd-cookie-local/tools/Dockerfile.test'];
 const files=[];
 for(const path of paths){

@@ -2,16 +2,16 @@
   "files": [
     {
       "path": "jd-cookie-local/src/core.mjs",
-      "sha256": "5d1138f5924b6d657cf0308a6b6ff3699598de2924b1538ff0e2b445ddcf04f4"
+      "sha256": "c7b4165bfdb471664a663b369bde0cd2ba9e92d78e604c9750194e36bd74390b"
     },
     {
       "path": "jd-cookie-local/src/runner.mjs",
-      "sha256": "01aed23bb629a4a3da54b582bfa2a9538bee2ca2a9f69dc3a45ed6c703c916c9"
+      "sha256": "89bbece2a8a1d0bb8c9746885e224c8af9ac6f54dfab40faa314bcb4b60eceb3"
     },
     {
       "path": "jd-cookie-local/src/adapter.js",
-      "sha256": "5b298f0ef191cb5aebc14b52fca4f55823ee78fa5c1d8633a132faefeff51cdb"
+      "sha256": "6f307f4975f54dbdd5c6945f3bfd55791cc8b08f515d00085988011bc30fa014"
     }
   ],
-  "bundleSha256": "489bbe039368f63fd6d5f891bd0fb4c7ca48624b63635f7c0f6204318366b5a3"
+  "bundleSha256": "255f9af72b1728045f283edbb1d19208cff2334bd0aa751dd545db255ffe5c79"
 }

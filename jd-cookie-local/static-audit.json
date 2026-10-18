@@ -1,28 +1,25 @@
 {
-  "bundleSha256": "489bbe039368f63fd6d5f891bd0fb4c7ca48624b63635f7c0f6204318366b5a3",
+  "bundleSha256": "255f9af72b1728045f283edbb1d19208cff2334bd0aa751dd545db255ffe5c79",
   "findings": [],
   "literalHosts": [
-    "api.m.jd.com",
-    "home.m.jd.com",
     "me-api.jd.com",
-    "plogin.m.jd.com",
-    "un.m.jd.com"
+    "my.m.jd.com"
   ],
   "emittedRequestHosts": [
-    "api.m.jd.com",
-    "un.m.jd.com",
     "me-api.jd.com"
   ],
   "runtimeDependencies": [],
+  "mode": "web",
   "manualReview": [
-    "Only Loon local storage and fixed JD requests receive credentials",
-    "Capture and conversion are separate",
+    "Browser capture and manual status make no HTTP requests",
+    "Only explicit manual verification sends the normalized Cookie to one fixed JD endpoint",
+    "No signing or wskey conversion code remains in the bundle",
     "No notification or console output contains raw credentials",
-    "Remote data never enters a code loader",
+    "Remote responses are parsed as JSON only",
     "TLS verification explicitly enabled; redirects and automatic cookie jar disabled"
   ],
   "limits": [
-    "Mobile Loon API compatibility and current JD protocol not yet verified",
+    "Mobile Safari/Loon capture and authenticated JD verification still need a user-device test",
     "Cooperative store fencing is not a cross-process atomic compare-and-swap",
     "Local Loon/BoxJs storage is not claimed to be encrypted"
   ]

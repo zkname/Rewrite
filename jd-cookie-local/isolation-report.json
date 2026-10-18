@@ -1,10 +1,10 @@
 {
-  "bundleSha256": "489bbe039368f63fd6d5f891bd0fb4c7ca48624b63635f7c0f6204318366b5a3",
+  "bundleSha256": "255f9af72b1728045f283edbb1d19208cff2334bd0aa751dd545db255ffe5c79",
   "baseImage": "whyour/qinglong@sha256:3e3971e78edbb5a6a6900bdfb7cd37352a535416f7ad2451747e601a7558d400",
-  "tests": 72,
-  "passed": 72,
+  "tests": 51,
+  "passed": 51,
   "failed": 0,
-  "referenceVectors": 32,
+  "mode": "web",
   "container": {
     "exitCode": 0,
     "network": "none",
@@ -17,20 +17,19 @@
     "securityOpt": [
       "no-new-privileges"
     ],
-    "image": "sha256:9e8dbb5b5783c4e3846bd69a9369fdbdc4a5492e87c88276cded6b17ce84f216"
+    "image": "sha256:1ea8d649c97ec3e26bdca7fe27a0b742335fd3835a30f7b8b42f5b3ce08001b2"
   },
   "telemetry": {
     "events": [],
-    "verifiedFiles": 10,
+    "verifiedFiles": 11,
     "node": "v24.18.1",
     "uid": 65534
   },
-  "tapSha256": "94fba69932626d44767a308504617c05d7a078df2c2a8357bb65b72c787fda00",
-  "oracleSha256": "583499044ef92189d0ffb5589b5ddec2e728b63186ea4cc7c2ea3f654bf44723",
+  "tapSha256": "1b4e0b65b52677b7ff1fec30f145f6de1e39b80939a9d35eabb078a8ef7719d8",
   "credentialsUsed": "synthetic-only",
   "live": {
-    "loon": "pending",
-    "jdExchange": "pending",
+    "safariLoonCapture": "pending",
+    "jdLoginCheck": "pending",
     "beanQuery": "pending"
   },
   "mainMergeAllowed": false

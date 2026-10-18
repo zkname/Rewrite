@@ -1,443 +1,317 @@
 TAP version 13
-# Subtest: bundle executes full manual conversion with strict transport options
-ok 1 - bundle executes full manual conversion with strict transport options
+# Subtest: generated browser hook forwards request unchanged and never calls HTTP
+ok 1 - generated browser hook forwards request unchanged and never calls HTTP
   ---
-  duration_ms: 41.65697
+  duration_ms: 20.093414
   type: 'test'
   ...
-# Subtest: bundle timeout settles once, ignores late callbacks and sends no retry
-ok 2 - bundle timeout settles once, ignores late callbacks and sends no retry
+# Subtest: generated missing-cookie hook and local status are visible without HTTP
+ok 2 - generated missing-cookie hook and local status are visible without HTTP
   ---
-  duration_ms: 6.702609
+  duration_ms: 6.738488
   type: 'test'
   ...
-# Subtest: bundle TLS error has no insecure fallback or credential-bearing error output
-ok 3 - bundle TLS error has no insecure fallback or credential-bearing error output
+# Subtest: generated manual verifier saves only on explicit JD success
+ok 3 - generated manual verifier saves only on explicit JD success
   ---
-  duration_ms: 5.006619
+  duration_ms: 7.282583
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 0
-ok 4 - pinned Python signature vector 0
+# Subtest: generated timeout has no retry, credential leakage or double callback
+ok 4 - generated timeout has no retry, credential leakage or double callback
   ---
-  duration_ms: 1.895065
+  duration_ms: 3.579
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 1
-ok 5 - pinned Python signature vector 1
+# Subtest: generated tls-error has no retry, credential leakage or double callback
+ok 5 - generated tls-error has no retry, credential leakage or double callback
   ---
-  duration_ms: 0.600773
+  duration_ms: 3.092281
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 2
-ok 6 - pinned Python signature vector 2
+# Subtest: both plugin builds contain the same pinned script and browser-only capture rules
+ok 6 - both plugin builds contain the same pinned script and browser-only capture rules
   ---
-  duration_ms: 0.52449
+  duration_ms: 2.331419
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 3
-ok 7 - pinned Python signature vector 3
+# Subtest: BoxJs retains compatible storage keys and has no credential upload switch
+ok 7 - BoxJs retains compatible storage keys and has no credential upload switch
   ---
-  duration_ms: 2.372999
+  duration_ms: 4.17046
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 4
-ok 8 - pinned Python signature vector 4
+# Subtest: capture exact HTTPS browser host m.jd.com
+ok 8 - capture exact HTTPS browser host m.jd.com
   ---
-  duration_ms: 0.465508
+  duration_ms: 0.896571
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 5
-ok 9 - pinned Python signature vector 5
+# Subtest: capture exact HTTPS browser host home.m.jd.com
+ok 9 - capture exact HTTPS browser host home.m.jd.com
   ---
-  duration_ms: 0.7085
+  duration_ms: 0.336464
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 6
-ok 10 - pinned Python signature vector 6
+# Subtest: capture exact HTTPS browser host my.m.jd.com
+ok 10 - capture exact HTTPS browser host my.m.jd.com
   ---
-  duration_ms: 0.798853
+  duration_ms: 0.690608
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 7
-ok 11 - pinned Python signature vector 7
+# Subtest: reject unexpected capture URL http://my.m.jd.com/
+ok 11 - reject unexpected capture URL http://my.m.jd.com/
   ---
-  duration_ms: 0.662739
+  duration_ms: 1.065794
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 8
-ok 12 - pinned Python signature vector 8
+# Subtest: reject unexpected capture URL https://my.m.jd.com.evil.invalid/
+ok 12 - reject unexpected capture URL https://my.m.jd.com.evil.invalid/
   ---
-  duration_ms: 0.402574
+  duration_ms: 0.333331
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 9
-ok 13 - pinned Python signature vector 9
+# Subtest: reject unexpected capture URL https://my.m.jd.com@evil.invalid/
+ok 13 - reject unexpected capture URL https://my.m.jd.com@evil.invalid/
   ---
-  duration_ms: 0.494671
+  duration_ms: 0.181475
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 10
-ok 14 - pinned Python signature vector 10
+# Subtest: reject unexpected capture URL https://evil.invalid/?next=https://my.m.jd.com/
+ok 14 - reject unexpected capture URL https://evil.invalid/?next=https://my.m.jd.com/
   ---
-  duration_ms: 0.558143
+  duration_ms: 0.127487
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 11
-ok 15 - pinned Python signature vector 11
+# Subtest: reject unexpected capture URL https://my.m.jd.com:8443/
+ok 15 - reject unexpected capture URL https://my.m.jd.com:8443/
   ---
-  duration_ms: 0.413821
+  duration_ms: 0.113584
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 12
-ok 16 - pinned Python signature vector 12
+# Subtest: reject unexpected capture URL https://blackhole.m.jd.com/getinfo
+ok 16 - reject unexpected capture URL https://blackhole.m.jd.com/getinfo
   ---
-  duration_ms: 0.393547
+  duration_ms: 0.112965
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 13
-ok 17 - pinned Python signature vector 13
+# Subtest: reject unexpected capture URL https://perf.m.jd.com/app_monitor/test/getRule
+ok 17 - reject unexpected capture URL https://perf.m.jd.com/app_monitor/test/getRule
   ---
-  duration_ms: 0.284028
+  duration_ms: 0.102172
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 14
-ok 18 - pinned Python signature vector 14
+# Subtest: reject unexpected capture URL https://my.m.jd.com\\@evil.invalid/
+ok 18 - reject unexpected capture URL https://my.m.jd.com\\@evil.invalid/
   ---
-  duration_ms: 0.325773
+  duration_ms: 0.128617
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 15
-ok 19 - pinned Python signature vector 15
+# Subtest: ignore numeric metadata and extract complete Cookie only from this request
+ok 19 - ignore numeric metadata and extract complete Cookie only from this request
   ---
-  duration_ms: 0.307568
+  duration_ms: 0.647396
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 16
-ok 20 - pinned Python signature vector 16
+# Subtest: handle header casing, arrays, quotes and Chinese percent encoding
+ok 20 - handle header casing, arrays, quotes and Chinese percent encoding
   ---
-  duration_ms: 1.676201
+  duration_ms: 0.84583
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 17
-ok 21 - pinned Python signature vector 17
+# Subtest: reject conflicting credentials in one or multiple header entries
+ok 21 - reject conflicting credentials in one or multiple header entries
   ---
-  duration_ms: 0.225331
+  duration_ms: 1.277189
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 18
-ok 22 - pinned Python signature vector 18
+# Subtest: reject fake keys, malformed identities and target fields without equals
+ok 22 - reject fake keys, malformed identities and target fields without equals
   ---
-  duration_ms: 0.16001
+  duration_ms: 0.78164
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 19
-ok 23 - pinned Python signature vector 19
+# Subtest: reject control characters, non-string headers and oversized headers
+ok 23 - reject control characters, non-string headers and oversized headers
   ---
-  duration_ms: 0.204665
+  duration_ms: 0.62184
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 20
-ok 24 - pinned Python signature vector 20
+# Subtest: only canonical full accounts may be sent or persisted
+ok 24 - only canonical full accounts may be sent or persisted
   ---
-  duration_ms: 0.226355
+  duration_ms: 0.672696
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 21
-ok 25 - pinned Python signature vector 21
+# Subtest: login success requires explicit retcode and matching identity when provided
+ok 25 - login success requires explicit retcode and matching identity when provided
   ---
-  duration_ms: 0.30302
+  duration_ms: 0.606403
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 22
-ok 26 - pinned Python signature vector 22
+# Subtest: manual verification has one fixed HTTPS endpoint with strict TLS and no redirects
+ok 26 - manual verification has one fixed HTTPS endpoint with strict TLS and no redirects
   ---
-  duration_ms: 0.438567
+  duration_ms: 0.366549
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 23
-ok 27 - pinned Python signature vector 23
+# Subtest: account notification labels remove control and bidirectional text
+ok 27 - account notification labels remove control and bidirectional text
   ---
-  duration_ms: 0.265375
+  duration_ms: 0.311519
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 24
-ok 28 - pinned Python signature vector 24
+# Subtest: status before any capture is explicit and local-only
+ok 28 - status before any capture is explicit and local-only
   ---
-  duration_ms: 0.244774
+  duration_ms: 2.220318
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 25
-ok 29 - pinned Python signature vector 25
+# Subtest: missing and incomplete browser credentials produce feedback without cross-request merging
+ok 29 - missing and incomplete browser credentials produce feedback without cross-request merging
   ---
-  duration_ms: 0.176269
+  duration_ms: 1.014735
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 26
-ok 30 - pinned Python signature vector 26
+# Subtest: complete browser capture stages only needed fields, without verifying or overwriting saved cookies
+ok 30 - complete browser capture stages only needed fields, without verifying or overwriting saved cookies
   ---
-  duration_ms: 0.153625
+  duration_ms: 0.904839
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 27
-ok 31 - pinned Python signature vector 27
+# Subtest: repeat capture is throttled but manual status always reports and later refresh notifies again
+ok 31 - repeat capture is throttled but manual status always reports and later refresh notifies again
   ---
-  duration_ms: 0.185139
+  duration_ms: 1.194829
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 28
-ok 32 - pinned Python signature vector 28
+# Subtest: account change notifies immediately and replaces only the staged candidate
+ok 32 - account change notifies immediately and replaces only the staged candidate
   ---
-  duration_ms: 0.205939
+  duration_ms: 0.540528
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 29
-ok 33 - pinned Python signature vector 29
+# Subtest: manual login verification sends one request and writes the compatible output only on success
+ok 33 - manual login verification sends one request and writes the compatible output only on success
   ---
-  duration_ms: 0.142789
+  duration_ms: 1.89965
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 30
-ok 34 - pinned Python signature vector 30
+# Subtest: same-account success replaces its record without duplicating accounts
+ok 34 - same-account success replaces its record without duplicating accounts
   ---
-  duration_ms: 0.144084
+  duration_ms: 0.791524
   type: 'test'
   ...
-# Subtest: pinned Python signature vector 31
-ok 35 - pinned Python signature vector 31
+# Subtest: a later browser visit does not reuse an expired login-verification result
+ok 35 - a later browser visit does not reuse an expired login-verification result
   ---
-  duration_ms: 0.172506
+  duration_ms: 0.80246
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 0
-ok 36 - RFC MD5 / UTF8 / Base64 length 0
+# Subtest: failed verification LOGIN_UNCONFIRMED preserves old data without retry
+ok 36 - failed verification LOGIN_UNCONFIRMED preserves old data without retry
   ---
-  duration_ms: 0.492827
+  duration_ms: 1.159055
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 1
-ok 37 - RFC MD5 / UTF8 / Base64 length 1
+# Subtest: failed verification LOGIN_UNCONFIRMED preserves old data without retry
+ok 37 - failed verification LOGIN_UNCONFIRMED preserves old data without retry
   ---
-  duration_ms: 0.439912
+  duration_ms: 0.905341
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 3
-ok 38 - RFC MD5 / UTF8 / Base64 length 3
+# Subtest: failed verification ACCOUNT_MISMATCH preserves old data without retry
+ok 38 - failed verification ACCOUNT_MISMATCH preserves old data without retry
   ---
-  duration_ms: 0.253539
+  duration_ms: 0.890868
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 14
-ok 39 - RFC MD5 / UTF8 / Base64 length 14
+# Subtest: failed verification HTTP_REJECTED preserves old data without retry
+ok 39 - failed verification HTTP_REJECTED preserves old data without retry
   ---
-  duration_ms: 0.18211
+  duration_ms: 0.844732
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 26
-ok 40 - RFC MD5 / UTF8 / Base64 length 26
+# Subtest: failed verification RATE_LIMITED preserves old data without retry
+ok 40 - failed verification RATE_LIMITED preserves old data without retry
   ---
-  duration_ms: 0.174314
+  duration_ms: 2.933203
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 8
-ok 41 - RFC MD5 / UTF8 / Base64 length 8
+# Subtest: failed verification RESPONSE_JSON preserves old data without retry
+ok 41 - failed verification RESPONSE_JSON preserves old data without retry
   ---
-  duration_ms: 0.183249
+  duration_ms: 0.930237
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 55
-ok 42 - RFC MD5 / UTF8 / Base64 length 55
+# Subtest: failed verification RESPONSE_FORMAT preserves old data without retry
+ok 42 - failed verification RESPONSE_FORMAT preserves old data without retry
   ---
-  duration_ms: 0.197495
+  duration_ms: 0.565025
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 56
-ok 43 - RFC MD5 / UTF8 / Base64 length 56
+# Subtest: unknown exceptions and forged storage status never leak details into notifications
+ok 43 - unknown exceptions and forged storage status never leak details into notifications
   ---
-  duration_ms: 0.173683
+  duration_ms: 0.96955
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 64
-ok 44 - RFC MD5 / UTF8 / Base64 length 64
+# Subtest: status expires and clears old or future-dated candidates without network
+ok 44 - status expires and clears old or future-dated candidates without network
   ---
-  duration_ms: 0.206468
+  duration_ms: 0.575465
   type: 'test'
   ...
-# Subtest: RFC MD5 / UTF8 / Base64 length 1000
-ok 45 - RFC MD5 / UTF8 / Base64 length 1000
+# Subtest: verify expires and clears old or future-dated candidates without network
+ok 45 - verify expires and clears old or future-dated candidates without network
   ---
-  duration_ms: 0.48756
+  duration_ms: 0.445686
   type: 'test'
   ...
-# Subtest: sign params exactly sign transmitted body and preserve fixed URL encoding
-ok 46 - sign params exactly sign transmitted body and preserve fixed URL encoding
+# Subtest: capture conflicts preserve previous candidate and make failure observable
+ok 46 - capture conflicts preserve previous candidate and make failure observable
   ---
-  duration_ms: 2.345439
+  duration_ms: 0.516544
   type: 'test'
   ...
-# Subtest: capture accepts header case and both fields together, never assembles separate requests
-ok 47 - capture accepts header case and both fields together, never assembles separate requests
+# Subtest: missing metadata never imports old wskey storage
+ok 47 - missing metadata never imports old wskey storage
   ---
-  duration_ms: 5.169004
+  duration_ms: 0.384915
   type: 'test'
   ...
-# Subtest: capture accepts numeric and punctuation metadata names without retaining their values
-ok 48 - capture accepts numeric and punctuation metadata names without retaining their values
+# Subtest: storage failure cannot be reported as saved and does not leak the candidate
+ok 48 - storage failure cannot be reported as saved and does not leak the candidate
   ---
-  duration_ms: 1.888621
+  duration_ms: 1.04551
   type: 'test'
   ...
-# Subtest: capture ignores unrelated metadata values, flags and conflicts
-ok 49 - capture ignores unrelated metadata values, flags and conflicts
+# Subtest: overlapping verification uses one request and fences a superseded owner
+ok 49 - overlapping verification uses one request and fences a superseded owner
   ---
-  duration_ms: 0.691662
+  duration_ms: 1.373973
   type: 'test'
   ...
-# Subtest: capture normalizes paired quotes and optional whitespace only on selected credentials
-ok 50 - capture normalizes paired quotes and optional whitespace only on selected credentials
+# Subtest: changing account during verification discards stale results even if capture IDs collide
+ok 50 - changing account during verification discards stale results even if capture IDs collide
   ---
-  duration_ms: 0.451966
+  duration_ms: 0.875577
   type: 'test'
   ...
-# Subtest: capture rejects ambiguous or invalid credentials even beside ignored metadata
-ok 51 - capture rejects ambiguous or invalid credentials even beside ignored metadata
+# Subtest: malformed existing account records stop a write rather than replacing unrelated data
+ok 51 - malformed existing account records stop a write rather than replacing unrelated data
   ---
-  duration_ms: 1.36576
+  duration_ms: 0.573031
   type: 'test'
   ...
-# Subtest: capture rejects non-string, oversized and control-bearing headers before extraction
-ok 52 - capture rejects non-string, oversized and control-bearing headers before extraction
-  ---
-  duration_ms: 0.776097
-  type: 'test'
-  ...
-# Subtest: Set-Cookie parses arrays, newlines and combined Expires commas
-ok 53 - Set-Cookie parses arrays, newlines and combined Expires commas
-  ---
-  duration_ms: 1.324605
-  type: 'test'
-  ...
-# Subtest: missing, expired, conflicting and fake cookies are rejected
-ok 54 - missing, expired, conflicting and fake cookies are rejected
-  ---
-  duration_ms: 1.31686
-  type: 'test'
-  ...
-# Subtest: token and account checks never infer success from missing fields
-ok 55 - token and account checks never infer success from missing fields
-  ---
-  duration_ms: 1.793043
-  type: 'test'
-  ...
-# Subtest: HTTPS capabilities disable redirects, cookies and insecure TLS; credentials separated by route
-ok 56 - HTTPS capabilities disable redirects, cookies and insecure TLS; credentials separated by route
-  ---
-  duration_ms: 1.242819
-  type: 'test'
-  ...
-# Subtest: capture passes unchanged request, no HTTP, removes all cross-request identity merging
-ok 57 - capture passes unchanged request, no HTTP, removes all cross-request identity merging
-  ---
-  duration_ms: 2.492385
-  type: 'test'
-  ...
-# Subtest: capture ignores App metadata, preserves request and previous state on invalid credentials
-ok 58 - capture ignores App metadata, preserves request and previous state on invalid credentials
-  ---
-  duration_ms: 1.0125
-  type: 'test'
-  ...
-# Subtest: manual conversion validates login, saves local result and clears only consumed capture
-ok 59 - manual conversion validates login, saves local result and clears only consumed capture
-  ---
-  duration_ms: 2.954183
-  type: 'test'
-  ...
-# Subtest: missing pin is resolved only by the JD response; mismatch never replaces existing cookies
-ok 60 - missing pin is resolved only by the JD response; mismatch never replaces existing cookies
-  ---
-  duration_ms: 5.295879
-  type: 'test'
-  ...
-# Subtest: expired capture is cleared; future timestamps rejected before HTTP
-ok 61 - expired capture is cleared; future timestamps rejected before HTTP
-  ---
-  duration_ms: 1.170171
-  type: 'test'
-  ...
-# Subtest: failed conversion leaves previous good cookie and blocks same-key immediate replay
-ok 62 - failed conversion leaves previous good cookie and blocks same-key immediate replay
-  ---
-  duration_ms: 1.495754
-  type: 'test'
-  ...
-# Subtest: concurrent invocations allow one conversion and fence a superseded owner
-ok 63 - concurrent invocations allow one conversion and fence a superseded owner
-  ---
-  duration_ms: 2.452714
-  type: 'test'
-  ...
-# Subtest: a capture arriving mid-conversion survives completion
-ok 64 - a capture arriving mid-conversion survives completion
-  ---
-  duration_ms: 1.538962
-  type: 'test'
-  ...
-# Subtest: storage failure before HTTP and before output commit cannot be reported as success
-ok 65 - storage failure before HTTP and before output commit cannot be reported as success
-  ---
-  duration_ms: 1.688777
-  type: 'test'
-  ...
-# Subtest: token response 302/HTTP_REJECTED is rejected without retries
-ok 66 - token response 302/HTTP_REJECTED is rejected without retries
-  ---
-  duration_ms: 1.108469
-  type: 'test'
-  ...
-# Subtest: token response 429/RATE_LIMITED is rejected without retries
-ok 67 - token response 429/RATE_LIMITED is rejected without retries
-  ---
-  duration_ms: 0.548513
-  type: 'test'
-  ...
-# Subtest: token response 200/RESPONSE_JSON is rejected without retries
-ok 68 - token response 200/RESPONSE_JSON is rejected without retries
-  ---
-  duration_ms: 0.79951
-  type: 'test'
-  ...
-# Subtest: token response 200/TOKEN_REJECTED is rejected without retries
-ok 69 - token response 200/TOKEN_REJECTED is rejected without retries
-  ---
-  duration_ms: 0.691988
-  type: 'test'
-  ...
-# Subtest: token response 200/RESPONSE_FORMAT is rejected without retries
-ok 70 - token response 200/RESPONSE_FORMAT is rejected without retries
-  ---
-  duration_ms: 0.511816
-  type: 'test'
-  ...
-# Subtest: login failure never saves a newly obtained cookie
-ok 71 - login failure never saves a newly obtained cookie
-  ---
-  duration_ms: 1.096753
-  type: 'test'
-  ...
-# Subtest: bundled Loon adapter forwards request and calls done exactly once without network or console
-ok 72 - bundled Loon adapter forwards request and calls done exactly once without network or console
-  ---
-  duration_ms: 71.321157
-  type: 'test'
-  ...
-1..72
-# tests 72
+1..51
+# tests 51
 # suites 0
-# pass 72
+# pass 51
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 331.772305
-# isolation {"events":[],"verifiedFiles":10,"node":"v24.18.1","uid":65534}
+# duration_ms 213.331085
+# isolation {"events":[],"verifiedFiles":11,"node":"v24.18.1","uid":65534}
