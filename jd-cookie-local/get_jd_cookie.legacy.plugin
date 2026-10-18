@@ -3,8 +3,8 @@
 #!author=zkname
 
 [Script]
-http-request ^https:\/\/(?:blackhole\.m\.jd\.com\/getinfo|perf\.m\.jd\.com\/app_monitor\/\w+\/getRule)(?:[?#]|$) script-path=https://raw.githubusercontent.com/zkname/Rewrite/39f18b696f45473938b1e56dff8fdca66bb03ec9/get_jd_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
-generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/39f18b696f45473938b1e56dff8fdca66bb03ec9/get_jd_wskey.js,tag=京东Cookie手动转换,timeout=45,argument="convert",enable=true
+http-request ^https:\/\/(?:blackhole\.m\.jd\.com\/getinfo|perf\.m\.jd\.com\/app_monitor\/\w+\/getRule)(?:[?#]|$) script-path=https://raw.githubusercontent.com/zkname/Rewrite/2ecd529005a236869e7b7f1afd6125aa0b67dee1/get_jd_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/2ecd529005a236869e7b7f1afd6125aa0b67dee1/get_jd_wskey.js,tag=京东Cookie手动转换,timeout=45,argument="convert",enable=true
 
 [MITM]
 hostname = blackhole.m.jd.com, perf.m.jd.com
