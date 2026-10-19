@@ -1,11 +1,11 @@
 #!name=京东App WSKEY（本地合并）
-#!desc=分别抓取 wskey 与 pin/pt_pin，十五分钟内本地合并并标记待核验。无上传、无转换、无定时。
+#!desc=分别抓取 wskey 与 pt_pin（兼容 pin），十五分钟内合并保存为 pt_pin 与 wskey，标记待核验。无上传、无转换、无定时。
 #!author=zkname
 
 [Script]
-http-request ^https:\/\/(?:(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)|sh\.jd\.com\/j\/[A-Za-z0-9_-]+(?:[?#]|$)|mars\.jd\.com\/log\/sdk\/v2(?:[?#]|$)) script-path=https://raw.githubusercontent.com/zkname/Rewrite/ea26ee5c18ebabd2835b64396cdc907fd5cf3550/get_jd_app_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
-generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/ea26ee5c18ebabd2835b64396cdc907fd5cf3550/get_jd_app_wskey.js,tag=京东App抓取状态,timeout=5,argument="status",enable=true
-generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/ea26ee5c18ebabd2835b64396cdc907fd5cf3550/get_jd_app_wskey.js,tag=京东App清除暂存,timeout=5,argument="clear",enable=true
+http-request ^https:\/\/(?:(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)|sh\.jd\.com\/j\/[A-Za-z0-9_-]+(?:[?#]|$)|mars\.jd\.com\/log\/sdk\/v2(?:[?#]|$)) script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App抓取状态,timeout=5,argument="status",enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App清除暂存,timeout=5,argument="clear",enable=true
 
 [MITM]
 hostname = blackhole.m.jd.com, perf.m.jd.com, sh.jd.com, mars.jd.com

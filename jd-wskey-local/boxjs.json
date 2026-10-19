@@ -8,7 +8,7 @@
       "name": "京东App WSKEY",
       "author": "@zkname",
       "descs_html": [
-        "保持同一账号使用 App，分别抓取 wskey 与 pin/pt_pin，十五分钟内到齐后合并；切换账号前请清除暂存。",
+        "保持同一账号使用 App，分别抓取 wskey 与 pt_pin（兼容 pin），十五分钟内到齐后合并保存为 pt_pin 与 wskey；切换账号前请清除暂存。",
         "合并结果不代表京东已核验同一账号，也不代表凭据有效。仅保存本机，不上传、不转换；复制后清除，勿共享或云备份。"
       ],
       "keys": [
@@ -24,7 +24,7 @@
           "val": "null",
           "type": "textarea",
           "rows": 10,
-          "desc": "复制 cookie 字段：pin=…; wskey=…;。cross-request-unverified 表示跨请求合并，仍须核验身份；不是已验证账号。"
+          "desc": "复制 cookie 字段：pt_pin=…; wskey=…;。cross-request-unverified 表示跨请求合并，仍须核验身份；不是已验证账号。"
         },
         {
           "id": "jdAppWskeyCaptureV1",
@@ -32,15 +32,15 @@
           "val": "null",
           "type": "textarea",
           "rows": 10,
-          "desc": "查看 credential.cookie；同一请求有 pin 时为 pin=…; wskey=…;，没有时仅保存 wskey。pin_hash 不是 pin，不能用于确认账号。十五分钟后下次执行时清除，不代表服务器有效期。"
+          "desc": "查看 credential.cookie；同一请求有账号时为 pt_pin=…; wskey=…;，没有时仅保存 wskey。兼容旧 pin 输入；pin_hash 不作为账号。十五分钟后下次执行时清除，不代表服务器有效期。"
         },
         {
           "id": "jdAppPinCaptureV1",
-          "name": "最近抓到的 pin/pt_pin（敏感）",
+          "name": "最近抓到的 pt_pin（兼容 pin，敏感）",
           "val": "null",
           "type": "textarea",
           "rows": 5,
-          "desc": "从请求中单独暂存的账号字段；pin_hash 不作为账号。观察到账号变化会清除旧 wskey 与合并结果。"
+          "desc": "从请求中单独暂存的账号字段，合并输出统一为 pt_pin；pin_hash 不作为账号。观察到账号变化会清除旧 wskey 与合并结果。"
         },
         {
           "id": "jdAppWskeyStatusV1",
