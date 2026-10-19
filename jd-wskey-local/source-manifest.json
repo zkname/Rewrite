@@ -2,7 +2,7 @@
   "files": [
     {
       "path": "jd-wskey-local/src/core.mjs",
-      "sha256": "2c9981931047fc7cc67dc778d9f27241fafcf2151a6f3ac7987911d541c5f939"
+      "sha256": "66cd39c7e42f2f45d15843a8cb4173ff4598e4b32840cce790a864d4f4e996eb"
     },
     {
       "path": "jd-wskey-local/src/runner.mjs",
@@ -10,8 +10,8 @@
     },
     {
       "path": "jd-wskey-local/src/adapter.js",
-      "sha256": "3aba74d9c7eed08924eb2d5d82a1752905507fac242f6a8c02afe12258042938"
+      "sha256": "59ff14a76e711cd794bd437d4de6a30107c5a55619a0fe738ba9a950b512d1ab"
     }
   ],
-  "bundleSha256": "7dac2bcaf9048e9b2d721d147c19bd576e1188a18454da13865bb507e4ccd471"
+  "bundleSha256": "6fcc4ff934f8010bdef0bb02534c30467c1c2eb3163aee5c2a5669da2ef6c342"
 }

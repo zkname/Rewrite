@@ -13,12 +13,34 @@ function fixture() {
       const result=runWskeyWorkflow(core,{...env,request:input,mode});assert.equal(ends,previous+1);assert.equal(JSON.stringify(input),before);return result;}};
 }
 const captureKey='jdAppWskeyCaptureV1',statusKey='jdAppWskeyStatusV1';
-test('only exact two HTTPS hosts are eligible, including paths absent from old rules',()=>{
+test('original two HTTPS hosts remain eligible, including paths absent from old rules',()=>{
   for(const url of ['https://blackhole.m.jd.com/getinfo','https://perf.m.jd.com/app_monitor/anything-new/getRule','https://perf.m.jd.com/new/path'])
     assert.equal(core.capture({url,headers:{}}).code,'APP_NO_COOKIE');
   for(const url of ['http://blackhole.m.jd.com/getinfo','https://blackhole.m.jd.com.evil.invalid/','https://perf.m.jd.com@evil.invalid/',
     'https://api.m.jd.com/','https://my.m.jd.com/','https://perf.m.jd.com:444/','https://perf.m.jd.com\\@evil.invalid/'])
     assert.throws(()=>core.capture({url,headers:{}}),{code:'CAPTURE_URL'});
+});
+test('observed sh route is accepted without admitting other paths or hostname lookalikes',()=>{
+  for(const suffix of ['', '?placeholder=0&device=synthetic', '#synthetic']) {
+    const r=core.capture({url:'https://sh.jd.com/j/Synthetic_123-abc'+suffix,headers:{}});
+    assert.equal(r.code,'APP_NO_COOKIE');assert.equal(r.host,'sh.jd.com');
+  }
+  for(const url of ['http://sh.jd.com/j/Synthetic','https://sh.jd.com/','https://sh.jd.com/j/',
+    'https://sh.jd.com/other/Synthetic','https://sh.jd.com/j/Synthetic/extra','https://sh.jd.com/j/Synthetic.other',
+    'https://sh.jd.com.evil.invalid/j/Synthetic','https://sh.jd.com@evil.invalid/j/Synthetic',
+    'https://sh.jd.com:444/j/Synthetic','https://sh.jd.com/j/Synthetic%2Fextra'])
+    assert.throws(()=>core.capture({url,headers:{}}),{code:'CAPTURE_URL'});
+});
+test('sh request saves only wskey and never treats pin_hash or device fields as account identity',()=>{
+  const f=fixture();
+  f.run(request('pin=prior_account; wskey=synthetic_prior'));
+  const r=f.run({url:'https://sh.jd.com/j/Synthetic_123?device=synthetic_query',headers:{cookie:
+    'wskey=synthetic_current;whwswswws=synthetic_fingerprint;unionwsws={"jmafinger":"synthetic_device","devicefinger":"synthetic_eid"};pin_hash=123456789;x-rp-evtoken=synthetic_token;sdtoken=synthetic_sd'}});
+  assert.equal(r.status,'APP_WSKEY_ONLY');assert.equal(f.get(captureKey).credential.userName,null);
+  assert.equal(f.get(captureKey).credential.cookie,'wskey=synthetic_current;');
+  assert.equal(f.get(captureKey).credential.identity,'unverified');
+  assert.doesNotMatch(JSON.stringify([...f.store.values()]),/synthetic_query|synthetic_fingerprint|synthetic_device|synthetic_eid|123456789|synthetic_token|synthetic_sd/);
+  assert.doesNotMatch(JSON.stringify(f.messages),/synthetic_current/);
 });
 test('base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported',()=>{
   const r=core.fromHeaders({cOoKiE:['3device==value; unrelated; wskey="synthetic_key=="','pin=%E4%B8%AD%E6%96%87%2Buser;']});

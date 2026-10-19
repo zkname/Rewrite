@@ -1,11 +1,11 @@
 {
-  "bundleSha256": "7dac2bcaf9048e9b2d721d147c19bd576e1188a18454da13865bb507e4ccd471",
+  "bundleSha256": "6fcc4ff934f8010bdef0bb02534c30467c1c2eb3163aee5c2a5669da2ef6c342",
   "findings": [],
   "mode": "app-wskey",
   "emittedRequestHosts": [],
   "runtimeDependencies": [],
   "reviewed": [
-    "Only exact blackhole/perf HTTPS request headers are read",
+    "Only exact blackhole/perf HTTPS hosts and sh.jd.com /j/<id> HTTPS requests are read",
     "No network, process, dynamic code or logging API",
     "Capture and manual status forward the original request unchanged",
     "Credentials are stored only in dedicated local App storage",

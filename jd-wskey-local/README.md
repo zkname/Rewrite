@@ -1,22 +1,26 @@
 # 京东 App WSKEY 本地抓取
 
-恢复 App 抓取用途，独立保留网页版工具。脚本仅观察 `blackhole.m.jd.com`、`perf.m.jd.com`
-两个精确域名的 HTTPS 请求头，不改变请求、不发送网络请求、不自动转换或续期、不上传。
-这两个域名来自原插件；当前京东 App 是否仍携带 wskey，须在用户手机实测。
+恢复 App 抓取用途，独立保留网页版工具。脚本观察 `blackhole.m.jd.com`、`perf.m.jd.com`
+的 HTTPS 请求，以及 `https://sh.jd.com/j/<标识>` 请求；不改变请求、不发送网络请求、不自动转换或续期、不上传。
+前两个域名来自原插件，`sh.jd.com/j/…` 来自用户实际观察到的 App 请求结构。测试仅使用合成数据，
+不保存用户提供的凭据、完整 URL 或设备参数。手机插件仍须实测。
 
 ## 手机使用
 
 已发布到 `feat/jd-cookie-local` 测试分支，原 `jd-cookie-local/get_jd_cookie.plugin` 与 `.legacy.plugin` 订阅入口改为 App 抓取。
+本次 `sh.jd.com/j/…` 兼容修复先保存在本地，尚未推送；已发布版本仍只有原来的两个域名。
 新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 legacy。仅启用其中一个，停用其他旧 wskey 规则。
 在 Loon 更新已有插件、在 BoxJs 更新已有订阅后使用；手机抓取仍须实测。
 
-1. 在 Loon 启用插件与 MitM，安装并信任 Loon 证书。解密范围只有上述两个域名。
+1. 在 Loon 启用插件与 MitM，安装并信任 Loon 证书。MitM 域名为 `blackhole.m.jd.com`、`perf.m.jd.com`、`sh.jd.com`。
+   Loon 的 MitM 按域名生效；脚本对 `sh.jd.com` 只匹配 `/j/<标识>`，不保存其他路径的请求数据。
 2. 保持 App 登录，划掉后台重新打开，正常使用首页和“我的”。没有保证触发的固定页面。
 3. 在 Loon 脚本列表点“京东App抓取状态”。此操作本地执行，即使没有匹配请求也能提示状态。
 4. 更新已有 BoxJs 订阅 `jd-cookie-local/boxjs.json`，打开新增的“京东App WSKEY”。
    原“京东本地Cookie”仍展示网页校验结果，与 wskey 数据互不混用。
 5. 在“最近抓到的 WSKEY”中复制 `credential.cookie`。同一请求有 pin 时是
    `pin=…; wskey=…;`；只有 wskey 时保持账号未知，后续换取并验证 Cookie 才能确认身份。
+   请求里的 `pin_hash` 不能当作 `pin`；只有 wskey 和 pin_hash 时显示 `APP_WSKEY_ONLY` 是预期结果。
    不发送到聊天或日志，不手动拼接其他请求的 pin。用完运行“京东App清除暂存”。
 
 | 状态 | 含义 |
@@ -52,5 +56,5 @@ node jd-wskey-local/tools/audit.mjs
 不提交、不推送、不修改远端。是否推送由用户另行明确授权；不自动合并 main。
 
 原版参考：`zkname/Rewrite@a8b75ba3433521bc334627dc8f7a1ba540feecb4:get_jd_wskey.js`。
-只沿用监听域名与抓取用途；解析、状态和适配器重新实现，无旧 Env 包装器、签名、HTTP 客户端、
+沿用原版两个监听域名与抓取用途，并加入实测观察到的 sh 路径；解析、状态和适配器重新实现，无旧 Env 包装器、签名、HTTP 客户端、
 跨请求缓存拼接、凭据日志及自动提交配置。未将上游原版擅自标为自有代码。

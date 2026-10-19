@@ -31,8 +31,8 @@ export function createWskeyCore() {
   }
   function capture(request) {
     check(typeof request?.url === 'string' && request.url.length <= 8192 && !/[\s\x00-\x1f\x7f]/.test(request.url),'CAPTURE_URL');
-    const match = /^https:\/\/(blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)/.exec(request.url);
-    check(match,'CAPTURE_URL');return {...fromHeaders(request.headers),host:match[1]};
+    const match = /^https:\/\/(?:(blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)|(sh\.jd\.com)\/j\/[A-Za-z0-9_-]+(?:[?#]|$))/.exec(request.url);
+    check(match,'CAPTURE_URL');return {...fromHeaders(request.headers),host:match[1] || match[2]};
   }
   function validCredential(value) {
     check(value && value.identity === 'unverified' && typeof value.cookie === 'string','STORAGE_FORMAT');

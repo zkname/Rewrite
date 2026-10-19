@@ -13,7 +13,7 @@ auditWalk(ast,node=>{
 });
 const report={bundleSha256:createHash('sha256').update(source).digest('hex'),findings,mode:'app-wskey',
   emittedRequestHosts:[],runtimeDependencies:[],
-  reviewed:['Only exact blackhole/perf HTTPS request headers are read','No network, process, dynamic code or logging API',
+  reviewed:['Only exact blackhole/perf HTTPS hosts and sh.jd.com /j/<id> HTTPS requests are read','No network, process, dynamic code or logging API',
     'Capture and manual status forward the original request unchanged','Credentials are stored only in dedicated local App storage',
     'Identity is never combined across requests or marked verified','Only fixed status codes reach notifications'],
   limits:['Current JD App and Loon compatibility still require phone testing','Local storage is not claimed to be encrypted',
