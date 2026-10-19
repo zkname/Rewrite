@@ -1,0 +1,11 @@
+#!name=京东App WSKEY（本地抓取）
+#!desc=抓取、状态和清除均在本机完成，无上传、无转换、无定时。需 App 实测。
+#!author=zkname
+
+[Script]
+http-request ^https:\/\/(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$) script-path=https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js,tag=京东App抓取状态,timeout=5,argument="status",enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js,tag=京东App清除暂存,timeout=5,argument="clear",enable=true
+
+[MITM]
+hostname = blackhole.m.jd.com, perf.m.jd.com

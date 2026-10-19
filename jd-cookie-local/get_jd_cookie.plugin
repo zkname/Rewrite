@@ -1,11 +1,11 @@
-#!name=京东网页 Cookie（实验版）
-#!desc=Safari 登录京东后抓取网页 Cookie，手动校验并存本地。无签名、无上传、无定时。
+#!name=京东App WSKEY（本地抓取）
+#!desc=抓取、状态和清除均在本机完成，无上传、无转换、无定时。需 App 实测。
 #!author=zkname
 
 [Script]
-request if ${url} ~= /^https:\/\/(?:m\.jd\.com|home\.m\.jd\.com|my\.m\.jd\.com)(?:[\/?#]|$)/ then script("https://raw.githubusercontent.com/zkname/Rewrite/0b4a30a933a4bc549dbff0c592e10400b182abce/get_jd_wskey.js") with tag="京东网页Cookie捕获", requires_body=false, timeout=5
-generic then script("https://raw.githubusercontent.com/zkname/Rewrite/0b4a30a933a4bc549dbff0c592e10400b182abce/get_jd_wskey.js", "status") with tag="京东网页抓取状态", timeout=5
-generic then script("https://raw.githubusercontent.com/zkname/Rewrite/0b4a30a933a4bc549dbff0c592e10400b182abce/get_jd_wskey.js", "verify") with tag="京东网页Cookie校验并保存", timeout=20
+request if ${url} ~= /^https:\/\/(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[\/?#]|$)/ then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js") with tag="京东App凭据捕获", requires_body=false, timeout=5
+generic then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js", "status") with tag="京东App抓取状态", timeout=5
+generic then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js", "clear") with tag="京东App清除暂存", timeout=5
 
 [MITM]
-hostname = m.jd.com, home.m.jd.com, my.m.jd.com
+hostname = blackhole.m.jd.com, perf.m.jd.com
