@@ -3,5 +3,13 @@
   "scriptCommit": "84b4056f1b87bd93f50da070c8eba414a2f5cf5f",
   "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/84b4056f1b87bd93f50da070c8eba414a2f5cf5f/get_jd_app_wskey.js",
   "live": "pending",
-  "published": false
+  "published": true,
+  "publicationBranch": "feat/jd-cookie-local",
+  "publishedConfigCommit": "fc1d47912282fca2ef47ae744c421ecacecd2838",
+  "publicationVerification": {
+    "method": "download branch plugin and BoxJs files plus fixed source, compare byte-for-byte",
+    "verifiedFiles": 7,
+    "remoteBytesMatch": true,
+    "bundleSha256": "f29b599832b2b34031ab83b9dc3b9d7ecce657ae7da64ead2439fa9d3db5f13b"
+  }
 }
