@@ -1,9 +1,7 @@
 {
   "mode": "app-wskey",
-  "scriptCommit": "32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb",
-  "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb/get_jd_app_wskey.js",
+  "scriptCommit": "ea26ee5c18ebabd2835b64396cdc907fd5cf3550",
+  "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/ea26ee5c18ebabd2835b64396cdc907fd5cf3550/get_jd_app_wskey.js",
   "live": "pending",
-  "published": true,
-  "publicationBranch": "feat/jd-cookie-local",
-  "publishedConfigCommit": "2bc6c9b"
+  "published": false
 }

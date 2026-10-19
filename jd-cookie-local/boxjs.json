@@ -41,14 +41,24 @@
       "name": "京东App WSKEY",
       "author": "@zkname",
       "descs_html": [
-        "打开已登录的京东 App 抓取；在 Loon 运行“京东App抓取状态”区分未触发与未带 wskey。",
-        "仅保存在手机本地，不上传、不转换。抓到不代表有效，pin 也尚未核验。复制后请运行清除暂存；不要分享凭据或开启数据云备份。"
+        "保持同一账号使用 App，分别抓取 wskey 与 pin/pt_pin，十五分钟内到齐后合并；切换账号前请清除暂存。",
+        "合并结果不代表京东已核验同一账号，也不代表凭据有效。仅保存本机，不上传、不转换；复制后清除，勿共享或云备份。"
       ],
       "keys": [
+        "jdAppWskeyMergedV1",
         "jdAppWskeyCaptureV1",
+        "jdAppPinCaptureV1",
         "jdAppWskeyStatusV1"
       ],
       "settings": [
+        {
+          "id": "jdAppWskeyMergedV1",
+          "name": "合并结果（待核验，敏感）",
+          "val": "null",
+          "type": "textarea",
+          "rows": 10,
+          "desc": "复制 cookie 字段：pin=…; wskey=…;。cross-request-unverified 表示跨请求合并，仍须核验身份；不是已验证账号。"
+        },
         {
           "id": "jdAppWskeyCaptureV1",
           "name": "最近抓到的 WSKEY（敏感，未校验）",
@@ -58,12 +68,20 @@
           "desc": "查看 credential.cookie；同一请求有 pin 时为 pin=…; wskey=…;，没有时仅保存 wskey。pin_hash 不是 pin，不能用于确认账号。十五分钟后下次执行时清除，不代表服务器有效期。"
         },
         {
+          "id": "jdAppPinCaptureV1",
+          "name": "最近抓到的 pin/pt_pin（敏感）",
+          "val": "null",
+          "type": "textarea",
+          "rows": 5,
+          "desc": "从请求中单独暂存的账号字段；pin_hash 不作为账号。观察到账号变化会清除旧 wskey 与合并结果。"
+        },
+        {
           "id": "jdAppWskeyStatusV1",
           "name": "App 抓取状态",
           "val": "{}",
           "type": "textarea",
           "rows": 8,
-          "desc": "APP_NOT_SEEN 未触发；APP_NO_COOKIE/APP_NO_WSKEY 请求未携带；APP_CAPTURED 已抓到两个字段；APP_WSKEY_ONLY 仅抓到 wskey。"
+          "desc": "APP_MERGED_UNVERIFIED 已合并待核验；APP_PIN_CAPTURED 仅有账号；APP_WSKEY_ONLY 仅有 wskey；APP_CAPTURED 同一请求已抓到两个字段。"
         }
       ]
     }
