@@ -12,8 +12,8 @@
 
 ## 手机使用
 
-`pt_pin` 字段名修复已固定到源码提交 `16627fb01b74f8facbe7114abfaa6ebde9512257`，插件配置已重新生成。
-当前正在按用户授权发布到 `feat/jd-cookie-local` 分支；发布状态见 `release.json`。发布后更新以下现有入口，
+`pt_pin` 字段名修复已发布到 `feat/jd-cookie-local` 分支，源码固定为 `16627fb01b74f8facbe7114abfaa6ebde9512257`。
+插件配置提交为 `00411cce52cb2998e1bb61455d4724a77edeb7e9`；已从 GitHub 下载核对一致。更新以下现有入口，
 无需新建订阅：Loon 的 `jd-cookie-local/get_jd_cookie.plugin`，BoxJs 的 `jd-cookie-local/boxjs.json`。
 新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 `.legacy.plugin`。仅启用其中一个，停用其他旧 wskey 规则。
 
