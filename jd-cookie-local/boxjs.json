@@ -41,47 +41,47 @@
       "name": "京东App WSKEY",
       "author": "@zkname",
       "descs_html": [
-        "保持同一账号使用 App，分别抓取 wskey 与 pt_pin（兼容 pin），十五分钟内到齐后合并保存为 pt_pin 与 wskey；切换账号前请清除暂存。",
+        "本版使用独立 V2 缓存，请同时更新 Loon 与 BoxJs，停用旧插件并重新捕获。保持同一账号使用 App，分别抓取 wskey 与 pt_pin（兼容 pin），十五分钟内到齐后合并保存为 pt_pin 与 wskey；切换账号前请清除暂存。",
         "合并结果不代表京东已核验同一账号，也不代表凭据有效。仅保存本机，不上传、不转换；复制后清除，勿共享或云备份。"
       ],
       "keys": [
-        "jdAppWskeyMergedV1",
-        "jdAppWskeyCaptureV1",
-        "jdAppPinCaptureV1",
-        "jdAppWskeyStatusV1"
+        "jdAppWskeyMergedV2",
+        "jdAppWskeyCaptureV2",
+        "jdAppPinCaptureV2",
+        "jdAppWskeyStatusV2"
       ],
       "settings": [
         {
-          "id": "jdAppWskeyMergedV1",
+          "id": "jdAppWskeyMergedV2",
           "name": "合并结果（待核验，敏感）",
           "val": "null",
           "type": "textarea",
           "rows": 10,
-          "desc": "复制 cookie 字段：pt_pin=…; wskey=…;。cross-request-unverified 表示跨请求合并，仍须核验身份；不是已验证账号。"
+          "desc": "先运行 Loon「京东App抓取状态」刷新，再复制 cookie 字段：pt_pin=…; wskey=…;。cross-request-unverified 表示跨请求合并，仍须核验身份；不是已验证账号。"
         },
         {
-          "id": "jdAppWskeyCaptureV1",
+          "id": "jdAppWskeyCaptureV2",
           "name": "最近抓到的 WSKEY（敏感，未校验）",
           "val": "null",
           "type": "textarea",
           "rows": 10,
-          "desc": "查看 credential.cookie；同一请求有账号时为 pt_pin=…; wskey=…;，没有时仅保存 wskey。兼容旧 pin 输入；pin_hash 不作为账号。十五分钟后下次执行时清除，不代表服务器有效期。"
+          "desc": "查看 credential.cookie；同一请求有账号时为 pt_pin=…; wskey=…;，没有时仅保存 wskey。兼容旧 pin 输入；pin_hash 不作为账号。十五分钟后不再用于合并，原始值保留到手动清除；不代表服务器有效期。"
         },
         {
-          "id": "jdAppPinCaptureV1",
+          "id": "jdAppPinCaptureV2",
           "name": "最近抓到的 pt_pin（兼容 pin，敏感）",
           "val": "null",
           "type": "textarea",
           "rows": 5,
-          "desc": "从请求中单独暂存的账号字段，合并输出统一为 pt_pin；pin_hash 不作为账号。观察到账号变化会清除旧 wskey 与合并结果。"
+          "desc": "从请求中单独暂存的账号字段，合并输出统一为 pt_pin；pin_hash 不作为账号。账号变化会暂停旧配对，不删除已抓到的 wskey。"
         },
         {
-          "id": "jdAppWskeyStatusV1",
+          "id": "jdAppWskeyStatusV2",
           "name": "App 抓取状态",
           "val": "{}",
           "type": "textarea",
           "rows": 8,
-          "desc": "APP_MERGED_UNVERIFIED 已合并待核验；APP_PIN_CAPTURED 仅有账号；APP_WSKEY_ONLY 仅有 wskey；APP_CAPTURED 同一请求已抓到两个字段。"
+          "desc": "APP_MERGED_UNVERIFIED 已合并待核验；APP_PIN_CAPTURED 仅有账号；APP_WSKEY_ONLY 仅有 wskey；APP_CAPTURED 同一请求已抓到两个字段；APP_PAIR_CHANGED 等待重新配对；APP_BUSY 请稍后手动查看状态。"
         }
       ]
     }

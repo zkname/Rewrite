@@ -1,15 +1,7 @@
 {
   "mode": "app-wskey",
-  "scriptCommit": "16627fb01b74f8facbe7114abfaa6ebde9512257",
-  "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js",
+  "scriptCommit": "84b4056f1b87bd93f50da070c8eba414a2f5cf5f",
+  "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/84b4056f1b87bd93f50da070c8eba414a2f5cf5f/get_jd_app_wskey.js",
   "live": "pending",
-  "published": true,
-  "publicationBranch": "feat/jd-cookie-local",
-  "publishedConfigCommit": "00411cce52cb2998e1bb61455d4724a77edeb7e9",
-  "publicationVerification": {
-    "method": "download branch plugin and BoxJs files plus fixed source, compare byte-for-byte",
-    "verifiedFiles": 7,
-    "remoteBytesMatch": true,
-    "bundleSha256": "9dfea8b2a644e48b94c8ce9bdd96029eef9329a1b47182a5ab3be53b9bcccf29"
-  }
+  "published": false
 }

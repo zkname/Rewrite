@@ -3,9 +3,9 @@
 #!author=zkname
 
 [Script]
-http-request ^https:\/\/(?:(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)|sh\.jd\.com\/j\/[A-Za-z0-9_-]+(?:[?#]|$)|mars\.jd\.com\/log\/sdk\/v2(?:[?#]|$)) script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
-generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App抓取状态,timeout=5,argument="status",enable=true
-generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/16627fb01b74f8facbe7114abfaa6ebde9512257/get_jd_app_wskey.js,tag=京东App清除暂存,timeout=5,argument="clear",enable=true
+http-request ^https:\/\/(?:(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[/?#]|$)|sh\.jd\.com\/j\/[A-Za-z0-9_-]+(?:[?#]|$)|mars\.jd\.com\/log\/sdk\/v2(?:[?#]|$)) script-path=https://raw.githubusercontent.com/zkname/Rewrite/84b4056f1b87bd93f50da070c8eba414a2f5cf5f/get_jd_app_wskey.js,tag=京东App凭据捕获,requires-body=false,timeout=5,enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/84b4056f1b87bd93f50da070c8eba414a2f5cf5f/get_jd_app_wskey.js,tag=京东App抓取状态,timeout=5,argument="status",enable=true
+generic script-path=https://raw.githubusercontent.com/zkname/Rewrite/84b4056f1b87bd93f50da070c8eba414a2f5cf5f/get_jd_app_wskey.js,tag=京东App清除暂存,timeout=5,argument="clear",enable=true
 
 [MITM]
 hostname = blackhole.m.jd.com, perf.m.jd.com, sh.jd.com, mars.jd.com
