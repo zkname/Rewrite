@@ -3,9 +3,9 @@
 #!author=zkname
 
 [Script]
-request if ${url} ~= /^https:\/\/(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[\/?#]|$)/ then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js") with tag="京东App凭据捕获", requires_body=false, timeout=5
-generic then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js", "status") with tag="京东App抓取状态", timeout=5
-generic then script("https://raw.githubusercontent.com/zkname/Rewrite/f9310894fc307dccaf9ea3d9b2472ebbfa97764a/get_jd_app_wskey.js", "clear") with tag="京东App清除暂存", timeout=5
+request if ${url} ~= /^https:\/\/(?:(?:blackhole\.m\.jd\.com|perf\.m\.jd\.com)(?:[\/?#]|$)|sh\.jd\.com\/j\/[A-Za-z0-9_-]+(?:[?#]|$))/ then script("https://raw.githubusercontent.com/zkname/Rewrite/32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb/get_jd_app_wskey.js") with tag="京东App凭据捕获", requires_body=false, timeout=5
+generic then script("https://raw.githubusercontent.com/zkname/Rewrite/32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb/get_jd_app_wskey.js", "status") with tag="京东App抓取状态", timeout=5
+generic then script("https://raw.githubusercontent.com/zkname/Rewrite/32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb/get_jd_app_wskey.js", "clear") with tag="京东App清除暂存", timeout=5
 
 [MITM]
-hostname = blackhole.m.jd.com, perf.m.jd.com
+hostname = blackhole.m.jd.com, perf.m.jd.com, sh.jd.com

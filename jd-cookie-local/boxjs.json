@@ -55,7 +55,7 @@
           "val": "null",
           "type": "textarea",
           "rows": 10,
-          "desc": "查看 credential.cookie；同一请求有 pin 时为 pin=…; wskey=…;，没有时仅保存 wskey。十五分钟后下次执行时清除，不代表服务器有效期。"
+          "desc": "查看 credential.cookie；同一请求有 pin 时为 pin=…; wskey=…;，没有时仅保存 wskey。pin_hash 不是 pin，不能用于确认账号。十五分钟后下次执行时清除，不代表服务器有效期。"
         },
         {
           "id": "jdAppWskeyStatusV1",
