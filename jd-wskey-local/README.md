@@ -8,7 +8,7 @@
 ## 手机使用
 
 已发布到 `feat/jd-cookie-local` 测试分支，原 `jd-cookie-local/get_jd_cookie.plugin` 与 `.legacy.plugin` 订阅入口改为 App 抓取。
-本次 `sh.jd.com/j/…` 兼容修复先保存在本地，尚未推送；已发布版本仍只有原来的两个域名。
+本次 `sh.jd.com/j/…` 兼容修复已加入测试分支发布版本；更新插件后请确认 MitM 列表包含 `sh.jd.com`。
 新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 legacy。仅启用其中一个，停用其他旧 wskey 规则。
 在 Loon 更新已有插件、在 BoxJs 更新已有订阅后使用；手机抓取仍须实测。
 

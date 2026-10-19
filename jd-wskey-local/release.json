@@ -3,5 +3,7 @@
   "scriptCommit": "32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb",
   "scriptURL": "https://raw.githubusercontent.com/zkname/Rewrite/32f68e6cd3ab72d9132b5f5ad15b9d05731e18fb/get_jd_app_wskey.js",
   "live": "pending",
-  "published": false
+  "published": true,
+  "publicationBranch": "feat/jd-cookie-local",
+  "publishedConfigCommit": "2bc6c9b"
 }
