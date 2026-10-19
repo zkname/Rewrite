@@ -1,0 +1,167 @@
+TAP version 13
+# Subtest: bundled complete has no network/process capabilities, no leaks and one unchanged completion
+ok 1 - bundled complete has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 16.689072
+  type: 'test'
+  ...
+# Subtest: bundled key-only has no network/process capabilities, no leaks and one unchanged completion
+ok 2 - bundled key-only has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.200777
+  type: 'test'
+  ...
+# Subtest: bundled no-cookie has no network/process capabilities, no leaks and one unchanged completion
+ok 3 - bundled no-cookie has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 1.832085
+  type: 'test'
+  ...
+# Subtest: bundled no-key has no network/process capabilities, no leaks and one unchanged completion
+ok 4 - bundled no-key has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 3.042923
+  type: 'test'
+  ...
+# Subtest: bundled status has no network/process capabilities, no leaks and one unchanged completion
+ok 5 - bundled status has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 1.988907
+  type: 'test'
+  ...
+# Subtest: bundled clear has no network/process capabilities, no leaks and one unchanged completion
+ok 6 - bundled clear has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 1.804323
+  type: 'test'
+  ...
+# Subtest: bundled storage-false has no network/process capabilities, no leaks and one unchanged completion
+ok 7 - bundled storage-false has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.302561
+  type: 'test'
+  ...
+# Subtest: bundled storage-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 8 - bundled storage-throw has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.964405
+  type: 'test'
+  ...
+# Subtest: bundled notify-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 9 - bundled notify-throw has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.1776
+  type: 'test'
+  ...
+# Subtest: bundled header-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 10 - bundled header-throw has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.170036
+  type: 'test'
+  ...
+# Subtest: only exact two HTTPS hosts are eligible, including paths absent from old rules
+ok 11 - only exact two HTTPS hosts are eligible, including paths absent from old rules
+  ---
+  duration_ms: 4.222007
+  type: 'test'
+  ...
+# Subtest: base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported
+ok 12 - base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported
+  ---
+  duration_ms: 0.815766
+  type: 'test'
+  ...
+# Subtest: identical duplicate credentials normalize; conflicting headers reject
+ok 13 - identical duplicate credentials normalize; conflicting headers reject
+  ---
+  duration_ms: 0.802899
+  type: 'test'
+  ...
+# Subtest: missing credentials have distinct observable states and web pt_key is not an App wskey
+ok 14 - missing credentials have distinct observable states and web pt_key is not an App wskey
+  ---
+  duration_ms: 0.598695
+  type: 'test'
+  ...
+# Subtest: invalid, placeholder and oversize keys are rejected without echoing inputs
+ok 15 - invalid, placeholder and oversize keys are rejected without echoing inputs
+  ---
+  duration_ms: 1.522968
+  type: 'test'
+  ...
+# Subtest: status before capture reports no trigger and subsequent incomplete requests are visible
+ok 16 - status before capture reports no trigger and subsequent incomplete requests are visible
+  ---
+  duration_ms: 3.298173
+  type: 'test'
+  ...
+# Subtest: different requests and accounts are never joined, even across hosts
+ok 17 - different requests and accounts are never joined, even across hosts
+  ---
+  duration_ms: 1.685669
+  type: 'test'
+  ...
+# Subtest: capturing same key without pin does not reuse previous identity
+ok 18 - capturing same key without pin does not reuse previous identity
+  ---
+  duration_ms: 2.087579
+  type: 'test'
+  ...
+# Subtest: notification throttling never suppresses explicit manual status or a new credential
+ok 19 - notification throttling never suppresses explicit manual status or a new credential
+  ---
+  duration_ms: 1.532721
+  type: 'test'
+  ...
+# Subtest: expiry is exact at fifteen minutes; clear also works with corrupted capture data
+ok 20 - expiry is exact at fifteen minutes; clear also works with corrupted capture data
+  ---
+  duration_ms: 0.792294
+  type: 'test'
+  ...
+# Subtest: clock rollback invalidates capture; next matching request also clears expired data
+ok 21 - clock rollback invalidates capture; next matching request also clears expired data
+  ---
+  duration_ms: 0.630291
+  type: 'test'
+  ...
+# Subtest: storage write failure and forged stored credential cannot claim success
+ok 22 - storage write failure and forged stored credential cannot claim success
+  ---
+  duration_ms: 1.188394
+  type: 'test'
+  ...
+# Subtest: legacy App caches and web cookies are neither read nor overwritten
+ok 23 - legacy App caches and web cookies are neither read nor overwritten
+  ---
+  duration_ms: 0.447603
+  type: 'test'
+  ...
+# Subtest: invalid time and unsupported manual mode finish with fixed error codes
+ok 24 - invalid time and unsupported manual mode finish with fixed error codes
+  ---
+  duration_ms: 0.33687
+  type: 'test'
+  ...
+# Subtest: both Loon syntaxes pin capture/status/clear to one script and match only two exact App hosts
+ok 25 - both Loon syntaxes pin capture/status/clear to one script and match only two exact App hosts
+  ---
+  duration_ms: 1.252971
+  type: 'test'
+  ...
+# Subtest: BoxJs exposes only independent local App storage and clearly labels unverified credentials
+ok 26 - BoxJs exposes only independent local App storage and clearly labels unverified credentials
+  ---
+  duration_ms: 0.637428
+  type: 'test'
+  ...
+1..26
+# tests 26
+# suites 0
+# pass 26
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 191.552365
+# isolation {"events":[],"verifiedFiles":10,"node":"v24.18.1","uid":65534}

@@ -1,2 +1,4 @@
 /get_jd_wskey.js text eol=lf
 /jd-cookie-local/** text eol=lf
+/get_jd_app_wskey.js text eol=lf
+/jd-wskey-local/** text eol=lf

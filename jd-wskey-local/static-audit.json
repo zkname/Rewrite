@@ -1,0 +1,21 @@
+{
+  "bundleSha256": "7dac2bcaf9048e9b2d721d147c19bd576e1188a18454da13865bb507e4ccd471",
+  "findings": [],
+  "mode": "app-wskey",
+  "emittedRequestHosts": [],
+  "runtimeDependencies": [],
+  "reviewed": [
+    "Only exact blackhole/perf HTTPS request headers are read",
+    "No network, process, dynamic code or logging API",
+    "Capture and manual status forward the original request unchanged",
+    "Credentials are stored only in dedicated local App storage",
+    "Identity is never combined across requests or marked verified",
+    "Only fixed status codes reach notifications"
+  ],
+  "limits": [
+    "Current JD App and Loon compatibility still require phone testing",
+    "Local storage is not claimed to be encrypted",
+    "Fifteen-minute cleanup occurs on the next execution; no background deletion",
+    "No conversion, renewal or Qinglong acceptance is performed"
+  ]
+}
