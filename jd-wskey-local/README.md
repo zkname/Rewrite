@@ -11,7 +11,7 @@
 
 ## 手机使用
 
-本次合并版本已在本地完成验证，尚未推送；远端订阅暂时仍是上一版。发布后更新以下现有入口，
+本次合并版本已通过本地和断网验证，并按用户授权发布到 `feat/jd-cookie-local` 测试分支。更新以下现有入口，
 无需新建订阅：Loon 的 `jd-cookie-local/get_jd_cookie.plugin`，BoxJs 的 `jd-cookie-local/boxjs.json`。
 新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 `.legacy.plugin`。仅启用其中一个，停用其他旧 wskey 规则。
 
