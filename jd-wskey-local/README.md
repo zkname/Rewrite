@@ -6,9 +6,9 @@
 
 ## 手机使用
 
-发布后，原 `jd-cookie-local/get_jd_cookie.plugin` 与 `.legacy.plugin` 订阅入口改为 App 抓取。
+已发布到 `feat/jd-cookie-local` 测试分支，原 `jd-cookie-local/get_jd_cookie.plugin` 与 `.legacy.plugin` 订阅入口改为 App 抓取。
 新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 legacy。仅启用其中一个，停用其他旧 wskey 规则。
-GitHub 未推送前，手机更新仍是此前的网页版本。
+在 Loon 更新已有插件、在 BoxJs 更新已有订阅后使用；手机抓取仍须实测。
 
 1. 在 Loon 启用插件与 MitM，安装并信任 Loon 证书。解密范围只有上述两个域名。
 2. 保持 App 登录，划掉后台重新打开，正常使用首页和“我的”。没有保证触发的固定页面。

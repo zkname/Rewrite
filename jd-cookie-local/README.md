@@ -1,8 +1,8 @@
 # 京东网页 Cookie → Loon 本地保存（实验版）
 
-本地待发布更新：原 `get_jd_cookie.plugin` / `.legacy.plugin` 订阅已准备恢复为 App WSKEY 抓取，
+测试分支已发布：原 `get_jd_cookie.plugin` / `.legacy.plugin` 订阅已恢复为 App WSKEY 抓取，
 说明见 [App 工具](../jd-wskey-local/README.md)。网页功能与已验证 Cookie 保留，网页版插件改用
-`get_jd_web_cookie.plugin` / `.legacy.plugin`。更新推送前，手机上的原订阅仍是网页版本。
+`get_jd_web_cookie.plugin` / `.legacy.plugin`。在 Loon 更新插件后即可取得 App 抓取配置。
 下文是保留的网页版使用说明；BoxJs 仍使用本目录同一个订阅，App 数据位于独立的新应用中。
 
 用 Safari 正常登录京东网页版，捕获同一请求中的 `pt_key/pt_pin`，再手动校验登录并保存到 BoxJs。
@@ -16,7 +16,7 @@
 1. 发布后，如需保留网页抓取，使用独立网页版入口，名称为“京东网页 Cookie（实验版）”。
    [Build 983+](https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/feat/jd-cookie-local/jd-cookie-local/get_jd_web_cookie.plugin)；
    [旧版 Loon](https://raw.githubusercontent.com/zkname/Rewrite/refs/heads/feat/jd-cookie-local/jd-cookie-local/get_jd_web_cookie.legacy.plugin)。
-   这些新入口在本地更新推送后才可用；脚本固定到此前已发布的网页提交。
+   这些独立入口已发布到测试分支；脚本固定到此前已发布的网页提交。
 2. 保持 Loon 插件及 MitM 启用，证书已安装并信任。新规则只匹配 `m.jd.com`、`home.m.jd.com`、`my.m.jd.com`。
    更新后如有客户端要求刷新 MitM 配置，请按 Loon 提示应用；不要关闭证书验证。
 3. 在 **Safari 地址栏**打开 <https://my.m.jd.com/index.html>，按网页提示登录，再打开这个“我的”页面。
