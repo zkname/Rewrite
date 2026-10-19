@@ -1,5 +1,5 @@
 {
-  "bundleSha256": "9dfea8b2a644e48b94c8ce9bdd96029eef9329a1b47182a5ab3be53b9bcccf29",
+  "bundleSha256": "f29b599832b2b34031ab83b9dc3b9d7ecce657ae7da64ead2439fa9d3db5f13b",
   "findings": [],
   "mode": "app-wskey",
   "emittedRequestHosts": [],
@@ -9,13 +9,17 @@
     "No network, process, dynamic code or logging API",
     "Capture and manual status forward the original request unchanged",
     "Credentials are stored only in dedicated local App storage",
-    "Cross-request pairing is explicitly unverified, within fifteen minutes, and reset on observed account or wskey changes",
+    "Cross-request pairing is explicitly unverified and limited to fifteen minutes; observed changes suspend pairing without deleting raw peer data",
+    "V2 isolates legacy writers; merged output and status are rechecked after writes with bounded reconciliation",
+    "Only explicit clear deletes raw records; malformed requests and expiry never delete a fresh peer capture",
     "Only fixed status codes reach notifications"
   ],
   "limits": [
     "Current JD App and Loon compatibility still require phone testing",
     "Local storage is not claimed to be encrypted",
-    "Fifteen-minute cleanup occurs on the next execution; no background deletion",
+    "Expired raw values remain until explicit clear; view expiry is checked on execution, not by BoxJs",
+    "No cross-execution transaction or chronological guarantee for simultaneous writes to the same field; sustained changes report busy",
+    "Pause App traffic before clear; an already-started raw write can finish late but its revoked generation cannot merge",
     "Time proximity cannot prove that wskey and pin belong to the same account",
     "No conversion, renewal or Qinglong acceptance is performed"
   ]

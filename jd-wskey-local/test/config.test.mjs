@@ -23,10 +23,10 @@ test('both Loon syntaxes pin one script and match original hosts plus observed s
 });
 test('BoxJs exposes only independent local App storage and clearly labels unverified credentials',()=>{
   const app=JSON.parse(configs['boxjs.json']).apps[0];assert.equal(app.id,'zkname.jd-app-wskey');
-  assert.deepEqual(app.keys,['jdAppWskeyMergedV1','jdAppWskeyCaptureV1','jdAppPinCaptureV1','jdAppWskeyStatusV1']);
+  assert.deepEqual(app.keys,['jdAppWskeyMergedV2','jdAppWskeyCaptureV2','jdAppPinCaptureV2','jdAppWskeyStatusV2']);
   assert.doesNotMatch(configs['boxjs.json'],/WSKEY_AUTO_UPLOAD|TG_|wskeyList|jdCookieList/);
-  assert.match(app.settings.find(s=>s.id==='jdAppWskeyMergedV1').desc,/pt_pin=…; wskey=…;/);
-  assert.match(app.settings.find(s=>s.id==='jdAppWskeyCaptureV1').desc,/pt_pin=…; wskey=…;/);
+  assert.match(app.settings.find(s=>s.id==='jdAppWskeyMergedV2').desc,/pt_pin=…; wskey=…;/);
+  assert.match(app.settings.find(s=>s.id==='jdAppWskeyCaptureV2').desc,/pt_pin=…; wskey=…;/);
   assert.doesNotMatch(configs['boxjs.json'],/(?:：|为|\s)pin=…/);
   const release=JSON.parse(configs['release.json']);assert.equal(release.live,'pending');assert.equal(release.published,false);
   for(const value of ['main','feat/test','',revision+'x'])assert.throws(()=>wskeyConfigs(value));

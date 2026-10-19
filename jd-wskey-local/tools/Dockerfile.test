@@ -4,4 +4,4 @@ USER 65534:65534
 WORKDIR /work
 ENV TZ=Asia/Shanghai
 ENTRYPOINT ["node", "--disallow-code-generation-from-strings", "--import", "./jd-cookie-local/tools/isolation-guard.mjs", "--test", "--test-isolation=none", "--test-reporter=tap"]
-CMD ["jd-wskey-local/test/capture.test.mjs", "jd-wskey-local/test/adapter.test.mjs", "jd-wskey-local/test/config.test.mjs"]
+CMD ["jd-wskey-local/test/capture.test.mjs", "jd-wskey-local/test/adapter.test.mjs", "jd-wskey-local/test/config.test.mjs", "jd-wskey-local/test/interleaving.test.mjs"]

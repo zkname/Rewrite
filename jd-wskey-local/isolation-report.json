@@ -1,25 +1,44 @@
 {
-  "bundleSha256": "9dfea8b2a644e48b94c8ce9bdd96029eef9329a1b47182a5ab3be53b9bcccf29",
+  "bundleSha256": "f29b599832b2b34031ab83b9dc3b9d7ecce657ae7da64ead2439fa9d3db5f13b",
   "baseImage": "whyour/qinglong@sha256:3e3971e78edbb5a6a6900bdfb7cd37352a535416f7ad2451747e601a7558d400",
-  "testImage": "sha256:1b82e0cf927aa9ce780e01493874b79b8b8fe5a76448f69e06ef677a88122e96",
-  "testPackageSha256": "8fd22ab02373babf39474ebbcb18cc9127e9f57d8a1cf40569e4e74ceb1d3577",
-  "evidenceSha256": "5c63ec8dbd3e67f8aff6dba314beb5cb2e5179ee14c5126738b5428c8106a22b",
-  "node": "v24.18.1",
-  "tests": 45,
-  "passed": 45,
+  "testPackageSha256": "4117426f32ef1d9d2c66c3d0310eeacc5b1715d26851fc303f6d1deb306de01f",
+  "evidenceSha256": "99d09c4c7122b73596b5c2f961796dde59aa4d96f93b33eaefdf919bcac37861",
+  "tests": 259,
+  "passed": 259,
   "failed": 0,
-  "exitCode": 0,
-  "verifiedFiles": 10,
-  "forbiddenCapabilityEvents": [],
-  "user": "65534:65534",
-  "network": "none",
-  "readOnlyRoot": true,
-  "capDrop": ["ALL"],
-  "securityOptions": ["no-new-privileges"],
-  "hostBindMounts": [],
-  "imageDeclaredAnonymousVolumes": ["/ql/data (fresh Docker-managed volume; no host credentials)"],
-  "remoteEvidenceDirectory": "/tmp/jd-wskey-ptpin.Mf5jga",
-  "testContainer": "jd-wskey-ptpin-20261019",
+  "container": {
+    "name": "/jd-wskey-race-20261019",
+    "image": "sha256:8c83b46b4491595617e5c0c38f6cca6c084aa16837a08acf5920e17b37e745c1",
+    "exitCode": 0,
+    "network": "none",
+    "readOnly": true,
+    "binds": null,
+    "user": "65534:65534",
+    "capDrop": [
+      "ALL"
+    ],
+    "securityOpt": [
+      "no-new-privileges"
+    ],
+    "mounts": [
+      {
+        "Type": "volume",
+        "Name": "9e5f26591086435452c13dba4654eae81ca0ebf64bdd008acfd1a0759c598fcd",
+        "Source": "/var/lib/docker/volumes/9e5f26591086435452c13dba4654eae81ca0ebf64bdd008acfd1a0759c598fcd/_data",
+        "Destination": "/ql/data",
+        "Driver": "local",
+        "Mode": "",
+        "RW": true,
+        "Propagation": ""
+      }
+    ]
+  },
+  "telemetry": {
+    "events": [],
+    "verifiedFiles": 11,
+    "node": "v24.18.1",
+    "uid": 65534
+  },
   "credentials": "synthetic only",
   "evidence": "test/isolation.tap",
   "realDeviceCapture": "pending",

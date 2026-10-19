@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 const root=new URL('../../',import.meta.url),out=new URL('.local/loon-app-wskey-container/',root);
 const paths=['get_jd_app_wskey.js','jd-wskey-local/src/core.mjs','jd-wskey-local/src/runner.mjs',
   'jd-wskey-local/src/adapter.js','jd-wskey-local/test/capture.test.mjs','jd-wskey-local/test/adapter.test.mjs',
-  'jd-wskey-local/test/config.test.mjs','jd-wskey-local/tools/loon-config.mjs',
+  'jd-wskey-local/test/config.test.mjs','jd-wskey-local/test/interleaving.test.mjs','jd-wskey-local/tools/loon-config.mjs',
   'jd-cookie-local/tools/isolation-guard.mjs','jd-wskey-local/tools/Dockerfile.test'];
 const files=[];
 for(const path of paths){

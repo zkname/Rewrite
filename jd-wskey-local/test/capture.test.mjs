@@ -12,7 +12,7 @@ function fixture() {
     run:(input=null,mode='status') => {const before=JSON.stringify(input), previous=ends;
       const result=runWskeyWorkflow(core,{...env,request:input,mode});assert.equal(ends,previous+1);assert.equal(JSON.stringify(input),before);return result;}};
 }
-const captureKey='jdAppWskeyCaptureV1',statusKey='jdAppWskeyStatusV1',pinKey='jdAppPinCaptureV1',mergedKey='jdAppWskeyMergedV1';
+const captureKey='jdAppWskeyCaptureV2',statusKey='jdAppWskeyStatusV2',pinKey='jdAppPinCaptureV2',mergedKey='jdAppWskeyMergedV2';
 test('original two HTTPS hosts remain eligible, including paths absent from old rules',()=>{
   for(const url of ['https://blackhole.m.jd.com/getinfo','https://perf.m.jd.com/app_monitor/anything-new/getRule','https://perf.m.jd.com/new/path'])
     assert.equal(core.capture({url,headers:{}}).code,'APP_NO_COOKIE');
@@ -36,7 +36,7 @@ test('sh request saves only wskey and never treats pin_hash or device fields as 
   f.run(request('pin=prior_account; wskey=synthetic_prior'));
   const r=f.run({url:'https://sh.jd.com/j/Synthetic_123?device=synthetic_query',headers:{cookie:
     'wskey=synthetic_current;whwswswws=synthetic_fingerprint;unionwsws={"jmafinger":"synthetic_device","devicefinger":"synthetic_eid"};pin_hash=123456789;x-rp-evtoken=synthetic_token;sdtoken=synthetic_sd'}});
-  assert.equal(r.status,'APP_WSKEY_ONLY');assert.equal(f.get(captureKey).credential.userName,null);
+  assert.equal(r.status,'APP_PAIR_CHANGED');assert.equal(f.get(captureKey).credential.userName,null);
   assert.equal(f.get(captureKey).credential.cookie,'wskey=synthetic_current;');
   assert.equal(f.get(captureKey).credential.identity,'unverified');
   assert.doesNotMatch(JSON.stringify([...f.store.values()]),/synthetic_query|synthetic_fingerprint|synthetic_device|synthetic_eid|123456789|synthetic_token|synthetic_sd/);
@@ -76,15 +76,15 @@ test('status before capture reports no trigger and subsequent incomplete request
   assert.equal(f.run(request('device=one')).status,'APP_NO_WSKEY');assert.equal(f.run().status,'APP_NO_WSKEY');
   assert.equal(f.get(captureKey),null);
 });
-test('account and wskey changes invalidate the opposite cached field and previous pair',()=>{
+test('account and wskey changes suspend pairing without deleting the opposite raw field',()=>{
   const f=fixture();f.run(request('pin=first'));f.run(request('wskey=synthetic_first','perf.m.jd.com'));
   assert.equal(f.get(captureKey).credential.userName,null);
   assert.equal(f.get(mergedKey).identity,'cross-request-unverified');
-  f.run(request('pin=second'));assert.equal(f.get(captureKey),null);assert.equal(f.get(mergedKey),null);
+  assert.equal(f.run(request('pin=second')).status,'APP_PAIR_CHANGED');assert.ok(f.get(captureKey));assert.equal(f.get(mergedKey),null);
   f.run(request('pin=second; wskey=synthetic_second'));assert.equal(f.get(captureKey).credential.userName,'second');
   f.run(request('wskey=synthetic_third'));assert.equal(f.get(captureKey).credential.userName,null);
   assert.equal(f.get(captureKey).credential.cookie,'wskey=synthetic_third;');
-  assert.equal(f.get(pinKey),null);assert.equal(f.get(mergedKey),null);
+  assert.ok(f.get(pinKey));assert.equal(f.get(mergedKey),null);
 });
 test('raw capture stays separate from an explicitly unverified cross-request pair',()=>{
   const f=fixture();f.run(request('pin=first; wskey=synthetic_key'));f.run(request('wskey=synthetic_key'));
@@ -101,13 +101,13 @@ test('notification throttling never suppresses explicit manual status or a new c
 });
 test('expiry is exact at fifteen minutes; clear also works with corrupted capture data',()=>{
   const f=fixture();f.run(request('pin=one; wskey=synthetic_key'));f.setTime(epoch+899999);assert.equal(f.run().status,'APP_CAPTURED');
-  f.setTime(epoch+900000);assert.equal(f.run().status,'APP_EXPIRED');assert.equal(f.get(captureKey),null);
+  f.setTime(epoch+900000);assert.equal(f.run().status,'APP_EXPIRED');assert.ok(f.get(captureKey));assert.equal(f.get(mergedKey),null);
   f.store.set(captureKey,'broken JSON');assert.equal(f.run().code,'STORAGE_FORMAT');
   assert.equal(f.run(null,'clear').status,'APP_CLEARED');assert.equal(f.get(captureKey),null);
 });
-test('clock rollback invalidates capture; next matching request also clears expired data',()=>{
+test('clock rollback and expiry exclude raw captures without deleting them',()=>{
   for(const next of [epoch-1,epoch+900000]) {
-    const f=fixture();f.run(request('wskey=synthetic_key'));f.setTime(next);f.run(request());assert.equal(f.get(captureKey),null);
+    const f=fixture();f.run(request('wskey=synthetic_key'));f.setTime(next);f.run(request());assert.ok(f.get(captureKey));assert.equal(f.get(mergedKey),null);assert.equal(f.get(statusKey).hasWskey,false);
   }
 });
 test('storage write failure and forged stored credential cannot claim success',()=>{
@@ -117,9 +117,9 @@ test('storage write failure and forged stored credential cannot claim success',(
   g.store.set(captureKey,JSON.stringify(c));assert.equal(g.run().code,'STORAGE_FORMAT');
 });
 test('legacy App caches and web cookies are neither read nor overwritten',()=>{
-  const f=fixture();for(const key of ['wskeyList','jdLocalCaptureV1','jdWebCaptureV1','jdCookieList']) f.store.set(key,'unrelated data');
+  const f=fixture();for(const key of ['wskeyList','jdLocalCaptureV2','jdWebCaptureV2','jdCookieList']) f.store.set(key,'unrelated data');
   f.run(request('wskey=synthetic_key'));f.run(null,'clear');
-  for(const key of ['wskeyList','jdLocalCaptureV1','jdWebCaptureV1','jdCookieList']) assert.equal(f.store.get(key),'unrelated data');
+  for(const key of ['wskeyList','jdLocalCaptureV2','jdWebCaptureV2','jdCookieList']) assert.equal(f.store.get(key),'unrelated data');
 });
 test('invalid time and unsupported manual mode finish with fixed error codes',()=>{
   const f=fixture();assert.equal(f.run(null,'convert').code,'MODE_REQUIRED');
@@ -147,12 +147,12 @@ test('mars exact logging route can supply pt_pin; unrelated paths and forged hos
   for(const url of ['https://mars.jd.com/','https://mars.jd.com/log/sdk/v2/extra','https://mars.jd.com.evil.invalid/log/sdk/v2','http://mars.jd.com/log/sdk/v2'])
     assert.throws(()=>core.capture({url,headers:{cookie:'pt_pin=account'}}),{code:'CAPTURE_URL'});
 });
-test('same request wskey and pt_pin are normalized, while contradictory pin fields clear pairing',()=>{
+test('same request normalizes pt_pin; a contradictory later request preserves previous valid data',()=>{
   const f=fixture();assert.equal(f.run(request('wskey=synthetic_key; pt_pin=account')).status,'APP_CAPTURED');
   assert.equal(f.get(mergedKey).identity,'same-request-unverified');
   assert.equal(f.get(mergedKey).cookie,'pt_pin=account; wskey=synthetic_key;');
   assert.equal(f.run(request('wskey=synthetic_key; pin=account; pt_pin=other')).code,'COOKIE_CONFLICT');
-  for(const k of [captureKey,pinKey,mergedKey])assert.equal(f.get(k),null);
+  for(const k of [captureKey,pinKey,mergedKey])assert.ok(f.get(k));
 });
 
 test('pt_pin output preserves its original encoding and takes precedence over an equivalent pin alias',()=>{
@@ -168,58 +168,6 @@ test('pt_pin output preserves its original encoding and takes precedence over an
   assert.throws(()=>core.fromHeaders({Cookie:['pt_pin=one','pt_pin=two','wskey=synthetic_key']}),{code:'COOKIE_CONFLICT'});
 });
 
-function legacyFixture({crossRequest=false,capturedAt=epoch}={}){
-  const f=fixture(),pin='test%20one';
-  f.store.set(captureKey,JSON.stringify({version:1,capturedAt,credential:{
-    userName:crossRequest?null:'test one',cookie:(crossRequest?'':'pin='+pin+'; ')+'wskey=synthetic_key;',identity:'unverified'}}));
-  f.store.set(pinKey,JSON.stringify({version:1,capturedAt:epoch+5000,value:pin,userName:'test one'}));
-  f.store.set(mergedKey,JSON.stringify({version:1,userName:'test one',cookie:'pin='+pin+'; wskey=synthetic_key;',
-    identity:crossRequest?'cross-request-unverified':'same-request-unverified',wskeyCapturedAt:capturedAt,pinCapturedAt:epoch+5000,expiresAt:capturedAt+900000}));
-  f.setTime(epoch+10000);return f;
-}
-
-test('upgrade migrates old same-request and cross-request output without extending time or verifying identity',()=>{
-  for(const crossRequest of [false,true]){
-    const f=legacyFixture({crossRequest});
-    assert.equal(f.run().status,crossRequest?'APP_MERGED_UNVERIFIED':'APP_CAPTURED');
-    const c=f.get(captureKey),m=f.get(mergedKey);
-    assert.equal(c.credential.cookie,crossRequest?'wskey=synthetic_key;':'pt_pin=test%20one; wskey=synthetic_key;');
-    assert.equal(c.capturedAt,epoch);assert.equal(m.wskeyCapturedAt,epoch);
-    assert.equal(m.pinCapturedAt,epoch+5000);assert.equal(m.expiresAt,epoch+900000);
-    assert.equal(m.cookie,'pt_pin=test%20one; wskey=synthetic_key;');
-    assert.equal(m.identity,crossRequest?'cross-request-unverified':'same-request-unverified');
-    assert.equal(f.get(statusKey).credentialValidation,'not-performed');
-    assert.doesNotMatch(JSON.stringify(f.messages),/synthetic|test one|test%20one/);
-    f.setTime(epoch+900000);f.run();assert.equal(f.get(captureKey),null);assert.equal(f.get(mergedKey),null);
-  }
-});
-
-test('expired legacy captures are removed without being refreshed by migration',()=>{
-  const f=legacyFixture({capturedAt:epoch-900000});f.run();
-  assert.equal(f.get(captureKey),null);assert.equal(f.get(mergedKey),null);
-});
-
-test('legacy migration rejects extra fields, duplicated aliases and mismatched account identities',()=>{
-  for(const invalid of [
-    {cookie:'pin=test%20one; wskey=synthetic_key; device=extra;'},
-    {cookie:'pin=test%20one; wskey=synthetic_key; pin=test%20one;'},
-    {cookie:'pin=test%20one; pt_pin=test%20one; wskey=synthetic_key;'},
-    {userName:'different_account'}
-  ]){
-    const f=legacyFixture(),c=f.get(captureKey);Object.assign(c.credential,invalid);
-    f.store.set(captureKey,JSON.stringify(c));assert.equal(f.run().code,'STORAGE_FORMAT');
-    for(const key of [captureKey,pinKey,mergedKey])assert.equal(f.get(key),null);
-  }
-});
-
-test('legacy migration clears old merged output before a failed capture write',()=>{
-  const f=legacyFixture(),messages=[];let ends=0;
-  const result=runWskeyWorkflow(core,{mode:'status',now:()=>epoch+10000,read:k=>f.store.get(k),
-    write:(v,k)=>{if(k===captureKey)return false;f.store.set(k,v);return true;},
-    notify:code=>messages.push(code),done:v=>{assert.deepEqual(v,{});ends++;}});
-  assert.equal(result.code,'STORAGE_WRITE_FAILED');assert.equal(ends,1);
-  assert.equal(f.get(mergedKey),null);assert.deepEqual(messages,['STORAGE_WRITE_FAILED']);
-});
 test('fifteen-minute pairing window expires each side independently',()=>{
   for(const first of ['wskey=synthetic_key','pt_pin=account']){
     const f=fixture();f.run(request(first));f.setTime(epoch+900000);
@@ -242,10 +190,10 @@ test('expired merged output is removed even if the next request cannot be parsed
   const f=fixture();f.run(request('wskey=synthetic_key'));f.run(request('pt_pin=account'));
   f.setTime(epoch+900000);
   assert.equal(f.run({url:'https://perf.m.jd.com/report',headers:null}).code,'HEADER_FORMAT');
-  for(const key of [captureKey,pinKey,mergedKey])assert.equal(f.get(key),null);
+  for(const key of [captureKey,pinKey])assert.ok(f.get(key));assert.equal(f.get(mergedKey),null);
 });
 
-test('partial write failure invalidates merged output before replacing a credential',()=>{
+test('failed raw write preserves the previous valid pair and reports failure',()=>{
   const f=fixture();f.run(request('wskey=synthetic_old'));f.run(request('pt_pin=account'));
   let ends=0;const messages=[];
   const result=runWskeyWorkflow(core,{request:request('wskey=synthetic_new'),now:()=>epoch+1000,
@@ -253,6 +201,6 @@ test('partial write failure invalidates merged output before replacing a credent
       if(k===captureKey)return false;f.store.set(k,v);return true;
     },notify:c=>messages.push(c),done:v=>{assert.deepEqual(v,{});ends++;}});
   assert.equal(result.code,'STORAGE_WRITE_FAILED');assert.equal(ends,1);
-  assert.equal(f.get(mergedKey),null);assert.equal(f.get(pinKey),null);
-  assert.deepEqual(messages,['STORAGE_WRITE_FAILED']);assert.equal(f.get(statusKey).mergeStatus,'waiting');
+  assert.equal(f.get(mergedKey).cookie,'pt_pin=account; wskey=synthetic_old;');assert.ok(f.get(pinKey));
+  assert.deepEqual(messages,['STORAGE_WRITE_FAILED']);assert.equal(f.get(statusKey).mergeStatus,'unverified');
 });

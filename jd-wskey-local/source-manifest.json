@@ -6,12 +6,12 @@
     },
     {
       "path": "jd-wskey-local/src/runner.mjs",
-      "sha256": "9e4ab95e1bbdb34f00902f4ac8076deb84d7d86cc2ae1407fe913667efb1d83f"
+      "sha256": "3fb69057227c7b7b83f6697c45926134ec2407bbc099509816f45b58e81df9e2"
     },
     {
       "path": "jd-wskey-local/src/adapter.js",
-      "sha256": "e087988383ad08562ba6d59aeaa74913888f866ea78db2003391b7f173df3c8f"
+      "sha256": "57163c25c832a9c8ede18edf1f6155d79aa4092bdb37eb95265d9653ccd019cf"
     }
   ],
-  "bundleSha256": "9dfea8b2a644e48b94c8ce9bdd96029eef9329a1b47182a5ab3be53b9bcccf29"
+  "bundleSha256": "f29b599832b2b34031ab83b9dc3b9d7ecce657ae7da64ead2439fa9d3db5f13b"
 }
