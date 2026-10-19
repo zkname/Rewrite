@@ -23,13 +23,13 @@ export function createWskeyCore() {
       check(!Object.prototype.hasOwnProperty.call(fields,name) || fields[name] === value,'COOKIE_CONFLICT');fields[name] = value;
     }
     const has=name=>Object.prototype.hasOwnProperty.call(fields,name);
-    const hasPin=has('pin')||has('pt_pin'),pinValue=has('pin')?fields.pin:fields.pt_pin;
+    const hasPin=has('pin')||has('pt_pin'),pinValue=has('pt_pin')?fields.pt_pin:fields.pin;
     const pin=hasPin?{value:pinValue,userName:pinIdentity(pinValue)}:null;
-    if(has('pin')&&has('pt_pin'))check(pinIdentity(fields.pt_pin)===pin.userName,'COOKIE_CONFLICT');
+    if(has('pin')&&has('pt_pin'))check(pinIdentity(fields.pin)===pin.userName,'COOKIE_CONFLICT');
     if (!has('wskey')) return {code:pin?'APP_PIN_CAPTURED':'APP_NO_WSKEY',credential:null,pin};
     check(/^[A-Za-z0-9._~+/=-]{8,4096}$/.test(fields.wskey) && !/^(fake|deleted|null|undefined|xxx)/i.test(fields.wskey),'WSKEY_FORMAT');
     return {code:hasPin ? 'APP_CAPTURED' : 'APP_WSKEY_ONLY',credential:{
-      userName:pin?.userName??null,cookie:(hasPin ? 'pin=' + pin.value + '; ' : '') + 'wskey=' + fields.wskey + ';',identity:'unverified'
+      userName:pin?.userName??null,cookie:(hasPin ? 'pt_pin=' + pin.value + '; ' : '') + 'wskey=' + fields.wskey + ';',identity:'unverified'
     },pin};
   }
   function capture(request) {
@@ -40,10 +40,12 @@ export function createWskeyCore() {
   function validCredential(value) {
     check(value && value.identity === 'unverified' && typeof value.cookie === 'string','STORAGE_FORMAT');
     const normalized = fromHeaders({Cookie:value.cookie}).credential;
-    check(normalized && normalized.userName === value.userName && normalized.cookie === value.cookie,'STORAGE_FORMAT');return normalized;
+    // Accept only the exact previous output format for migration, not arbitrary Cookie text.
+    check(normalized && normalized.userName === value.userName &&
+      (normalized.cookie === value.cookie || normalized.cookie.replace(/^pt_pin=/,'pin=') === value.cookie),'STORAGE_FORMAT');return normalized;
   }
   function wskeyValue(credential) {
-    validCredential(credential);return /(?:^|; )wskey=([^;]+);$/.exec(credential.cookie)[1];
+    const normalized=validCredential(credential);return /(?:^|; )wskey=([^;]+);$/.exec(normalized.cookie)[1];
   }
   return Object.freeze({check,pinIdentity,fromHeaders,capture,validCredential,wskeyValue});
 }

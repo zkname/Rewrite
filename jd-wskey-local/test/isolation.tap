@@ -2,238 +2,280 @@ TAP version 13
 # Subtest: bundled complete has no network/process capabilities, no leaks and one unchanged completion
 ok 1 - bundled complete has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 21.394058
+  duration_ms: 12.686699
+  type: 'test'
+  ...
+# Subtest: bundled pt-pin-complete has no network/process capabilities, no leaks and one unchanged completion
+ok 2 - bundled pt-pin-complete has no network/process capabilities, no leaks and one unchanged completion
+  ---
+  duration_ms: 2.814423
   type: 'test'
   ...
 # Subtest: bundled key-only has no network/process capabilities, no leaks and one unchanged completion
-ok 2 - bundled key-only has no network/process capabilities, no leaks and one unchanged completion
+ok 3 - bundled key-only has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 3.383686
+  duration_ms: 2.192883
   type: 'test'
   ...
 # Subtest: bundled sh-key-only has no network/process capabilities, no leaks and one unchanged completion
-ok 3 - bundled sh-key-only has no network/process capabilities, no leaks and one unchanged completion
+ok 4 - bundled sh-key-only has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 2.035637
+  duration_ms: 2.142301
   type: 'test'
   ...
 # Subtest: bundled no-cookie has no network/process capabilities, no leaks and one unchanged completion
-ok 4 - bundled no-cookie has no network/process capabilities, no leaks and one unchanged completion
+ok 5 - bundled no-cookie has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 1.919149
+  duration_ms: 2.41529
   type: 'test'
   ...
 # Subtest: bundled no-key has no network/process capabilities, no leaks and one unchanged completion
-ok 5 - bundled no-key has no network/process capabilities, no leaks and one unchanged completion
+ok 6 - bundled no-key has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 1.698313
+  duration_ms: 2.084047
   type: 'test'
   ...
 # Subtest: bundled status has no network/process capabilities, no leaks and one unchanged completion
-ok 6 - bundled status has no network/process capabilities, no leaks and one unchanged completion
+ok 7 - bundled status has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 2.287181
+  duration_ms: 1.80436
   type: 'test'
   ...
 # Subtest: bundled clear has no network/process capabilities, no leaks and one unchanged completion
-ok 7 - bundled clear has no network/process capabilities, no leaks and one unchanged completion
+ok 8 - bundled clear has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 1.859357
+  duration_ms: 1.644394
   type: 'test'
   ...
 # Subtest: bundled storage-false has no network/process capabilities, no leaks and one unchanged completion
-ok 8 - bundled storage-false has no network/process capabilities, no leaks and one unchanged completion
+ok 9 - bundled storage-false has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 2.340032
+  duration_ms: 2.069816
   type: 'test'
   ...
 # Subtest: bundled storage-throw has no network/process capabilities, no leaks and one unchanged completion
-ok 9 - bundled storage-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 10 - bundled storage-throw has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 2.842042
+  duration_ms: 2.279891
   type: 'test'
   ...
 # Subtest: bundled notify-throw has no network/process capabilities, no leaks and one unchanged completion
-ok 10 - bundled notify-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 11 - bundled notify-throw has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 3.017635
+  duration_ms: 2.493704
   type: 'test'
   ...
 # Subtest: bundled header-throw has no network/process capabilities, no leaks and one unchanged completion
-ok 11 - bundled header-throw has no network/process capabilities, no leaks and one unchanged completion
+ok 12 - bundled header-throw has no network/process capabilities, no leaks and one unchanged completion
   ---
-  duration_ms: 2.283253
+  duration_ms: 1.967328
+  type: 'test'
+  ...
+# Subtest: bundled manual status upgrades an old cached pin without requests, leaks or expiry extension
+ok 13 - bundled manual status upgrades an old cached pin without requests, leaks or expiry extension
+  ---
+  duration_ms: 3.01325
   type: 'test'
   ...
 # Subtest: bundled separate sh wskey and perf/mars pin captures merge in either order without leaks
-ok 12 - bundled separate sh wskey and perf/mars pin captures merge in either order without leaks
+ok 14 - bundled separate sh wskey and perf/mars pin captures merge in either order without leaks
   ---
-  duration_ms: 17.781419
+  duration_ms: 20.298185
   type: 'test'
   ...
 # Subtest: original two HTTPS hosts remain eligible, including paths absent from old rules
-ok 13 - original two HTTPS hosts remain eligible, including paths absent from old rules
+ok 15 - original two HTTPS hosts remain eligible, including paths absent from old rules
   ---
-  duration_ms: 4.509337
+  duration_ms: 4.330254
   type: 'test'
   ...
 # Subtest: observed sh route is accepted without admitting other paths or hostname lookalikes
-ok 14 - observed sh route is accepted without admitting other paths or hostname lookalikes
+ok 16 - observed sh route is accepted without admitting other paths or hostname lookalikes
   ---
-  duration_ms: 0.929366
+  duration_ms: 0.901077
   type: 'test'
   ...
 # Subtest: sh request saves only wskey and never treats pin_hash or device fields as account identity
-ok 15 - sh request saves only wskey and never treats pin_hash or device fields as account identity
+ok 17 - sh request saves only wskey and never treats pin_hash or device fields as account identity
   ---
-  duration_ms: 4.517497
+  duration_ms: 4.72542
   type: 'test'
   ...
 # Subtest: base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported
-ok 16 - base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported
+ok 18 - base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported
   ---
-  duration_ms: 0.413741
+  duration_ms: 0.488337
   type: 'test'
   ...
 # Subtest: identical duplicate credentials normalize; conflicting headers reject
-ok 17 - identical duplicate credentials normalize; conflicting headers reject
+ok 19 - identical duplicate credentials normalize; conflicting headers reject
   ---
-  duration_ms: 0.916967
+  duration_ms: 0.625046
   type: 'test'
   ...
 # Subtest: missing credentials have distinct observable states and web pt_key is not an App wskey
-ok 18 - missing credentials have distinct observable states and web pt_key is not an App wskey
+ok 20 - missing credentials have distinct observable states and web pt_key is not an App wskey
   ---
-  duration_ms: 0.627585
+  duration_ms: 0.415774
   type: 'test'
   ...
 # Subtest: invalid, placeholder and oversize keys are rejected without echoing inputs
-ok 19 - invalid, placeholder and oversize keys are rejected without echoing inputs
+ok 21 - invalid, placeholder and oversize keys are rejected without echoing inputs
   ---
-  duration_ms: 1.262011
+  duration_ms: 1.401719
   type: 'test'
   ...
 # Subtest: status before capture reports no trigger and subsequent incomplete requests are visible
-ok 20 - status before capture reports no trigger and subsequent incomplete requests are visible
+ok 22 - status before capture reports no trigger and subsequent incomplete requests are visible
   ---
-  duration_ms: 0.764464
+  duration_ms: 0.753689
   type: 'test'
   ...
 # Subtest: account and wskey changes invalidate the opposite cached field and previous pair
-ok 21 - account and wskey changes invalidate the opposite cached field and previous pair
+ok 23 - account and wskey changes invalidate the opposite cached field and previous pair
   ---
-  duration_ms: 1.350019
+  duration_ms: 1.353437
   type: 'test'
   ...
 # Subtest: raw capture stays separate from an explicitly unverified cross-request pair
-ok 22 - raw capture stays separate from an explicitly unverified cross-request pair
+ok 24 - raw capture stays separate from an explicitly unverified cross-request pair
   ---
-  duration_ms: 0.693726
+  duration_ms: 0.92446
   type: 'test'
   ...
 # Subtest: notification throttling never suppresses explicit manual status or a new credential
-ok 23 - notification throttling never suppresses explicit manual status or a new credential
+ok 25 - notification throttling never suppresses explicit manual status or a new credential
   ---
-  duration_ms: 2.798393
+  duration_ms: 2.195033
   type: 'test'
   ...
 # Subtest: expiry is exact at fifteen minutes; clear also works with corrupted capture data
-ok 24 - expiry is exact at fifteen minutes; clear also works with corrupted capture data
+ok 26 - expiry is exact at fifteen minutes; clear also works with corrupted capture data
   ---
-  duration_ms: 0.815772
+  duration_ms: 1.355523
   type: 'test'
   ...
 # Subtest: clock rollback invalidates capture; next matching request also clears expired data
-ok 25 - clock rollback invalidates capture; next matching request also clears expired data
+ok 27 - clock rollback invalidates capture; next matching request also clears expired data
   ---
-  duration_ms: 0.55044
+  duration_ms: 0.931853
   type: 'test'
   ...
 # Subtest: storage write failure and forged stored credential cannot claim success
-ok 26 - storage write failure and forged stored credential cannot claim success
+ok 28 - storage write failure and forged stored credential cannot claim success
   ---
-  duration_ms: 0.961374
+  duration_ms: 1.432217
   type: 'test'
   ...
 # Subtest: legacy App caches and web cookies are neither read nor overwritten
-ok 27 - legacy App caches and web cookies are neither read nor overwritten
+ok 29 - legacy App caches and web cookies are neither read nor overwritten
   ---
-  duration_ms: 0.602109
+  duration_ms: 0.634561
   type: 'test'
   ...
 # Subtest: invalid time and unsupported manual mode finish with fixed error codes
-ok 28 - invalid time and unsupported manual mode finish with fixed error codes
+ok 30 - invalid time and unsupported manual mode finish with fixed error codes
   ---
-  duration_ms: 0.647099
+  duration_ms: 0.551795
   type: 'test'
   ...
 # Subtest: both request orders merge only wskey and pt_pin and retain unverified provenance
-ok 29 - both request orders merge only wskey and pt_pin and retain unverified provenance
+ok 31 - both request orders merge only wskey and pt_pin and retain unverified provenance
   ---
-  duration_ms: 1.000714
+  duration_ms: 1.337408
   type: 'test'
   ...
 # Subtest: mars exact logging route can supply pt_pin; unrelated paths and forged hosts cannot
-ok 30 - mars exact logging route can supply pt_pin; unrelated paths and forged hosts cannot
+ok 32 - mars exact logging route can supply pt_pin; unrelated paths and forged hosts cannot
   ---
-  duration_ms: 0.843233
+  duration_ms: 1.123642
   type: 'test'
   ...
 # Subtest: same request wskey and pt_pin are normalized, while contradictory pin fields clear pairing
-ok 31 - same request wskey and pt_pin are normalized, while contradictory pin fields clear pairing
+ok 33 - same request wskey and pt_pin are normalized, while contradictory pin fields clear pairing
   ---
-  duration_ms: 0.568848
+  duration_ms: 0.935891
+  type: 'test'
+  ...
+# Subtest: pt_pin output preserves its original encoding and takes precedence over an equivalent pin alias
+ok 34 - pt_pin output preserves its original encoding and takes precedence over an equivalent pin alias
+  ---
+  duration_ms: 1.122765
+  type: 'test'
+  ...
+# Subtest: upgrade migrates old same-request and cross-request output without extending time or verifying identity
+ok 35 - upgrade migrates old same-request and cross-request output without extending time or verifying identity
+  ---
+  duration_ms: 1.423038
+  type: 'test'
+  ...
+# Subtest: expired legacy captures are removed without being refreshed by migration
+ok 36 - expired legacy captures are removed without being refreshed by migration
+  ---
+  duration_ms: 0.835524
+  type: 'test'
+  ...
+# Subtest: legacy migration rejects extra fields, duplicated aliases and mismatched account identities
+ok 37 - legacy migration rejects extra fields, duplicated aliases and mismatched account identities
+  ---
+  duration_ms: 6.004988
+  type: 'test'
+  ...
+# Subtest: legacy migration clears old merged output before a failed capture write
+ok 38 - legacy migration clears old merged output before a failed capture write
+  ---
+  duration_ms: 1.509914
   type: 'test'
   ...
 # Subtest: fifteen-minute pairing window expires each side independently
-ok 32 - fifteen-minute pairing window expires each side independently
+ok 39 - fifteen-minute pairing window expires each side independently
   ---
-  duration_ms: 0.688908
+  duration_ms: 0.774302
   type: 'test'
   ...
 # Subtest: repeated same-account pin does not discard wskey; clear removes all three sensitive records
-ok 33 - repeated same-account pin does not discard wskey; clear removes all three sensitive records
+ok 40 - repeated same-account pin does not discard wskey; clear removes all three sensitive records
   ---
-  duration_ms: 0.695328
+  duration_ms: 0.632095
   type: 'test'
   ...
 # Subtest: later single-field refresh cannot keep an expired opposite field or pair alive
-ok 34 - later single-field refresh cannot keep an expired opposite field or pair alive
+ok 41 - later single-field refresh cannot keep an expired opposite field or pair alive
   ---
-  duration_ms: 0.690058
+  duration_ms: 0.648442
   type: 'test'
   ...
 # Subtest: expired merged output is removed even if the next request cannot be parsed
-ok 35 - expired merged output is removed even if the next request cannot be parsed
+ok 42 - expired merged output is removed even if the next request cannot be parsed
   ---
-  duration_ms: 0.471664
+  duration_ms: 0.582066
   type: 'test'
   ...
 # Subtest: partial write failure invalidates merged output before replacing a credential
-ok 36 - partial write failure invalidates merged output before replacing a credential
+ok 43 - partial write failure invalidates merged output before replacing a credential
   ---
-  duration_ms: 0.900553
+  duration_ms: 0.912507
   type: 'test'
   ...
 # Subtest: both Loon syntaxes pin one script and match original hosts plus observed sh and mars routes
-ok 37 - both Loon syntaxes pin one script and match original hosts plus observed sh and mars routes
+ok 44 - both Loon syntaxes pin one script and match original hosts plus observed sh and mars routes
   ---
-  duration_ms: 1.618659
+  duration_ms: 1.597599
   type: 'test'
   ...
 # Subtest: BoxJs exposes only independent local App storage and clearly labels unverified credentials
-ok 38 - BoxJs exposes only independent local App storage and clearly labels unverified credentials
+ok 45 - BoxJs exposes only independent local App storage and clearly labels unverified credentials
   ---
-  duration_ms: 1.007373
+  duration_ms: 0.765753
   type: 'test'
   ...
-1..38
-# tests 38
+1..45
+# tests 45
 # suites 0
-# pass 38
+# pass 45
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 248.674733
+# duration_ms 276.046571
 # isolation {"events":[],"verifiedFiles":10,"node":"v24.18.1","uid":65534}

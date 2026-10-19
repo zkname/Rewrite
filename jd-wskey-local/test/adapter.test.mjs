@@ -3,10 +3,11 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 const source=fs.readFileSync(new URL('../../get_jd_app_wskey.js',import.meta.url),'utf8');
-for(const kind of ['complete','key-only','sh-key-only','no-cookie','no-key','status','clear','storage-false','storage-throw','notify-throw','header-throw'])
+for(const kind of ['complete','pt-pin-complete','key-only','sh-key-only','no-cookie','no-key','status','clear','storage-false','storage-throw','notify-throw','header-throw'])
   test('bundled '+kind+' has no network/process capabilities, no leaks and one unchanged completion',()=>{
     const store=new Map(),messages=[];let done=0;
     const headers=kind==='no-cookie'?{}:{Cookie:kind==='no-key'?'tracking=x':kind==='key-only'?'wskey=synthetic_secret':'wskey=synthetic_secret; pin=synthetic_user'};
+    if(kind==='pt-pin-complete')headers.Cookie='wskey=synthetic_secret; pt_pin=synthetic_user';
     if(kind==='sh-key-only')headers.Cookie='wskey=synthetic_secret; pin_hash=123456789; unionwsws={"jmafinger":"synthetic_fingerprint"}';
     if(kind==='header-throw')Object.defineProperty(headers,'Cookie',{enumerable:true,get(){throw Error('synthetic_secret');}});
     const url=kind==='sh-key-only'?'https://sh.jd.com/j/Synthetic_123?placeholder=0':'https://blackhole.m.jd.com/getinfo';
@@ -22,7 +23,11 @@ for(const kind of ['complete','key-only','sh-key-only','no-cookie','no-key','sta
     new vm.Script(source).runInContext(vm.createContext(sandbox,{codeGeneration:{strings:false,wasm:false}}),{timeout:1000});
     assert.equal(done,1);assert.doesNotMatch(JSON.stringify(messages),/synthetic/);
     if(kind!=='header-throw')assert.equal(JSON.stringify(request),before);
-    if(['complete','key-only'].includes(kind))assert.ok(store.has('jdAppWskeyCaptureV1'));
+    if(['complete','pt-pin-complete','key-only'].includes(kind))assert.ok(store.has('jdAppWskeyCaptureV1'));
+    if(['complete','pt-pin-complete'].includes(kind)){
+      assert.equal(JSON.parse(store.get('jdAppWskeyCaptureV1')).credential.cookie,'pt_pin=synthetic_user; wskey=synthetic_secret;');
+      assert.equal(JSON.parse(store.get('jdAppWskeyMergedV1')).cookie,'pt_pin=synthetic_user; wskey=synthetic_secret;');
+    }
     if(kind==='status')assert.equal(messages[0][1],'APP_NOT_SEEN');
     if(kind==='storage-false')assert.equal(messages[0][1],'STORAGE_WRITE_FAILED');
     if(kind==='sh-key-only'){
@@ -31,6 +36,23 @@ for(const kind of ['complete','key-only','sh-key-only','no-cookie','no-key','sta
       assert.equal(c.userName,null);assert.equal(c.cookie,'wskey=synthetic_secret;');
     }
   });
+
+test('bundled manual status upgrades an old cached pin without requests, leaks or expiry extension',()=>{
+  const now=1792340000000,store=new Map(),messages=[];let done=0;
+  store.set('jdAppWskeyCaptureV1',JSON.stringify({version:1,capturedAt:now-1000,credential:{
+    userName:'synthetic_user',cookie:'pin=synthetic_user; wskey=synthetic_secret;',identity:'unverified'}}));
+  store.set('jdAppPinCaptureV1',JSON.stringify({version:1,capturedAt:now-1000,userName:'synthetic_user',value:'synthetic_user'}));
+  const sandbox={Date:{now:()=>now},$argument:'status',
+    $persistentStore:{read:k=>store.get(k),write:(v,k)=>{store.set(k,v);return true;}},
+    $notification:{post:(...args)=>messages.push(args)},$done:v=>{assert.equal(Object.keys(v).length,0);done++;}};
+  for(const name of ['$httpClient','$task','fetch','WebSocket','XMLHttpRequest','require','process','console','setTimeout'])
+    Object.defineProperty(sandbox,name,{get(){assert.fail('Forbidden capability '+name);}});
+  new vm.Script(source).runInContext(vm.createContext(sandbox,{codeGeneration:{strings:false,wasm:false}}),{timeout:1000});
+  const merged=JSON.parse(store.get('jdAppWskeyMergedV1'));
+  assert.equal(done,1);assert.equal(merged.cookie,'pt_pin=synthetic_user; wskey=synthetic_secret;');
+  assert.equal(merged.expiresAt,now-1000+900000);assert.equal(merged.identity,'same-request-unverified');
+  assert.doesNotMatch(JSON.stringify(messages),/synthetic/);
+});
 
 test('bundled separate sh wskey and perf/mars pin captures merge in either order without leaks',()=>{
   for(const pinURL of ['https://perf.m.jd.com/app_monitor/v3/report','https://mars.jd.com/log/sdk/v2']){
@@ -53,7 +75,7 @@ test('bundled separate sh wskey and perf/mars pin captures merge in either order
       }
       assert.equal(done,2);assert.equal(messages.at(-1)[1],'APP_MERGED_UNVERIFIED');
       const merged=JSON.parse(store.get('jdAppWskeyMergedV1'));
-      assert.equal(merged.cookie,'pin=synthetic_user; wskey=synthetic_secret;');
+      assert.equal(merged.cookie,'pt_pin=synthetic_user; wskey=synthetic_secret;');
       assert.equal(merged.identity,'cross-request-unverified');
       assert.doesNotMatch(JSON.stringify(messages),/synthetic|123456789/);
       assert.doesNotMatch(JSON.stringify([...store.values()]),/synthetic_web|123456789/);

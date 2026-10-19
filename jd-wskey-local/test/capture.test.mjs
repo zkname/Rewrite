@@ -45,7 +45,7 @@ test('sh request saves only wskey and never treats pin_hash or device fields as 
 test('base64 padding, quoted values, trailing semicolon and unrelated malformed cookies are supported',()=>{
   const r=core.fromHeaders({cOoKiE:['3device==value; unrelated; wskey="synthetic_key=="','pin=%E4%B8%AD%E6%96%87%2Buser;']});
   assert.equal(r.code,'APP_CAPTURED');assert.equal(r.credential.userName,'\u4e2d\u6587+user');
-  assert.equal(r.credential.cookie,'pin=%E4%B8%AD%E6%96%87%2Buser; wskey=synthetic_key==;');
+  assert.equal(r.credential.cookie,'pt_pin=%E4%B8%AD%E6%96%87%2Buser; wskey=synthetic_key==;');
   assert.equal(r.credential.identity,'unverified');
 });
 test('identical duplicate credentials normalize; conflicting headers reject',()=>{
@@ -133,7 +133,7 @@ test('both request orders merge only wskey and pt_pin and retain unverified prov
     ];
     if(reverse)requests.reverse();f.run(requests[0]);f.setTime(epoch+5000);
     assert.equal(f.run(requests[1]).status,'APP_MERGED_UNVERIFIED');
-    const m=f.get(mergedKey);assert.equal(m.userName,'test one');assert.equal(m.cookie,'pin=test%20one; wskey=synthetic_key;');
+    const m=f.get(mergedKey);assert.equal(m.userName,'test one');assert.equal(m.cookie,'pt_pin=test%20one; wskey=synthetic_key;');
     assert.equal(m.identity,'cross-request-unverified');assert.equal(m.expiresAt,epoch+900000);
     assert.equal(f.get(statusKey).hasPin,true);assert.equal(f.get(statusKey).credentialValidation,'not-performed');
     assert.doesNotMatch(JSON.stringify([...f.store.values()]),/synthetic_web|synthetic_device|123456789/);
@@ -143,16 +143,82 @@ test('both request orders merge only wskey and pt_pin and retain unverified prov
 test('mars exact logging route can supply pt_pin; unrelated paths and forged hosts cannot',()=>{
   const f=fixture();f.run(request('wskey=synthetic_key'));
   assert.equal(f.run({url:'https://mars.jd.com/log/sdk/v2',headers:{cookie:['pt_pin=account','pt_key=synthetic_web']}}).status,'APP_MERGED_UNVERIFIED');
-  assert.equal(f.get(mergedKey).cookie,'pin=account; wskey=synthetic_key;');
+  assert.equal(f.get(mergedKey).cookie,'pt_pin=account; wskey=synthetic_key;');
   for(const url of ['https://mars.jd.com/','https://mars.jd.com/log/sdk/v2/extra','https://mars.jd.com.evil.invalid/log/sdk/v2','http://mars.jd.com/log/sdk/v2'])
     assert.throws(()=>core.capture({url,headers:{cookie:'pt_pin=account'}}),{code:'CAPTURE_URL'});
 });
 test('same request wskey and pt_pin are normalized, while contradictory pin fields clear pairing',()=>{
   const f=fixture();assert.equal(f.run(request('wskey=synthetic_key; pt_pin=account')).status,'APP_CAPTURED');
   assert.equal(f.get(mergedKey).identity,'same-request-unverified');
-  assert.equal(f.get(mergedKey).cookie,'pin=account; wskey=synthetic_key;');
+  assert.equal(f.get(mergedKey).cookie,'pt_pin=account; wskey=synthetic_key;');
   assert.equal(f.run(request('wskey=synthetic_key; pin=account; pt_pin=other')).code,'COOKIE_CONFLICT');
   for(const k of [captureKey,pinKey,mergedKey])assert.equal(f.get(k),null);
+});
+
+test('pt_pin output preserves its original encoding and takes precedence over an equivalent pin alias',()=>{
+  for(const fields of ['pin=a; pt_pin=%61','pt_pin=%61; pin=a']){
+    const f=fixture();f.run(request(fields+'; wskey=synthetic_key=='));
+    for(const cookie of [f.get(captureKey).credential.cookie,f.get(mergedKey).cookie]){
+      assert.equal(cookie,'pt_pin=%61; wskey=synthetic_key==;');
+      assert.doesNotMatch(cookie,/(?:^|;\s*)pin=/);
+    }
+    assert.equal(f.get(mergedKey).userName,'a');
+    assert.equal(f.get(pinKey).value,'%61');
+  }
+  assert.throws(()=>core.fromHeaders({Cookie:['pt_pin=one','pt_pin=two','wskey=synthetic_key']}),{code:'COOKIE_CONFLICT'});
+});
+
+function legacyFixture({crossRequest=false,capturedAt=epoch}={}){
+  const f=fixture(),pin='test%20one';
+  f.store.set(captureKey,JSON.stringify({version:1,capturedAt,credential:{
+    userName:crossRequest?null:'test one',cookie:(crossRequest?'':'pin='+pin+'; ')+'wskey=synthetic_key;',identity:'unverified'}}));
+  f.store.set(pinKey,JSON.stringify({version:1,capturedAt:epoch+5000,value:pin,userName:'test one'}));
+  f.store.set(mergedKey,JSON.stringify({version:1,userName:'test one',cookie:'pin='+pin+'; wskey=synthetic_key;',
+    identity:crossRequest?'cross-request-unverified':'same-request-unverified',wskeyCapturedAt:capturedAt,pinCapturedAt:epoch+5000,expiresAt:capturedAt+900000}));
+  f.setTime(epoch+10000);return f;
+}
+
+test('upgrade migrates old same-request and cross-request output without extending time or verifying identity',()=>{
+  for(const crossRequest of [false,true]){
+    const f=legacyFixture({crossRequest});
+    assert.equal(f.run().status,crossRequest?'APP_MERGED_UNVERIFIED':'APP_CAPTURED');
+    const c=f.get(captureKey),m=f.get(mergedKey);
+    assert.equal(c.credential.cookie,crossRequest?'wskey=synthetic_key;':'pt_pin=test%20one; wskey=synthetic_key;');
+    assert.equal(c.capturedAt,epoch);assert.equal(m.wskeyCapturedAt,epoch);
+    assert.equal(m.pinCapturedAt,epoch+5000);assert.equal(m.expiresAt,epoch+900000);
+    assert.equal(m.cookie,'pt_pin=test%20one; wskey=synthetic_key;');
+    assert.equal(m.identity,crossRequest?'cross-request-unverified':'same-request-unverified');
+    assert.equal(f.get(statusKey).credentialValidation,'not-performed');
+    assert.doesNotMatch(JSON.stringify(f.messages),/synthetic|test one|test%20one/);
+    f.setTime(epoch+900000);f.run();assert.equal(f.get(captureKey),null);assert.equal(f.get(mergedKey),null);
+  }
+});
+
+test('expired legacy captures are removed without being refreshed by migration',()=>{
+  const f=legacyFixture({capturedAt:epoch-900000});f.run();
+  assert.equal(f.get(captureKey),null);assert.equal(f.get(mergedKey),null);
+});
+
+test('legacy migration rejects extra fields, duplicated aliases and mismatched account identities',()=>{
+  for(const invalid of [
+    {cookie:'pin=test%20one; wskey=synthetic_key; device=extra;'},
+    {cookie:'pin=test%20one; wskey=synthetic_key; pin=test%20one;'},
+    {cookie:'pin=test%20one; pt_pin=test%20one; wskey=synthetic_key;'},
+    {userName:'different_account'}
+  ]){
+    const f=legacyFixture(),c=f.get(captureKey);Object.assign(c.credential,invalid);
+    f.store.set(captureKey,JSON.stringify(c));assert.equal(f.run().code,'STORAGE_FORMAT');
+    for(const key of [captureKey,pinKey,mergedKey])assert.equal(f.get(key),null);
+  }
+});
+
+test('legacy migration clears old merged output before a failed capture write',()=>{
+  const f=legacyFixture(),messages=[];let ends=0;
+  const result=runWskeyWorkflow(core,{mode:'status',now:()=>epoch+10000,read:k=>f.store.get(k),
+    write:(v,k)=>{if(k===captureKey)return false;f.store.set(k,v);return true;},
+    notify:code=>messages.push(code),done:v=>{assert.deepEqual(v,{});ends++;}});
+  assert.equal(result.code,'STORAGE_WRITE_FAILED');assert.equal(ends,1);
+  assert.equal(f.get(mergedKey),null);assert.deepEqual(messages,['STORAGE_WRITE_FAILED']);
 });
 test('fifteen-minute pairing window expires each side independently',()=>{
   for(const first of ['wskey=synthetic_key','pt_pin=account']){

@@ -27,7 +27,7 @@ export function runWskeyWorkflow(core, env) {
   const merge = (c,p,t) => {
     if(!fresh(c,t)||!fresh(p,t))return null;
     if(c.credential.userName!==null&&c.credential.userName!==p.userName)return null;
-    return {version:1,userName:p.userName,cookie:'pin='+p.value+'; wskey='+core.wskeyValue(c.credential)+';',
+    return {version:1,userName:p.userName,cookie:'pt_pin='+p.value+'; wskey='+core.wskeyValue(c.credential)+';',
       identity:c.credential.userName===null?'cross-request-unverified':'same-request-unverified',
       wskeyCapturedAt:c.capturedAt,pinCapturedAt:p.capturedAt,expiresAt:Math.min(c.capturedAt,p.capturedAt)+900000};
   };
@@ -56,6 +56,14 @@ export function runWskeyWorkflow(core, env) {
     if(expired||pinExpired)save(keys.merged,null);
     if (expired) { save(keys.capture,null);previous = null; }
     if(pinExpired){save(keys.pin,null);pin=null;}
+    if(previous){
+      const normalized=core.validCredential(previous.credential);
+      if(normalized.cookie!==previous.credential.cookie){
+        // Keep the capture time and identity; changing a field name does not refresh a credential.
+        save(keys.merged,null);
+        previous={version:1,capturedAt:previous.capturedAt,credential:normalized};save(keys.capture,previous);
+      }
+    }
     if (env.request) {
       const result = core.capture(env.request);
       save(keys.observation,{code:result.code,at:t,host:result.host});
