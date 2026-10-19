@@ -31,3 +31,32 @@ for(const kind of ['complete','key-only','sh-key-only','no-cookie','no-key','sta
       assert.equal(c.userName,null);assert.equal(c.cookie,'wskey=synthetic_secret;');
     }
   });
+
+test('bundled separate sh wskey and perf/mars pin captures merge in either order without leaks',()=>{
+  for(const pinURL of ['https://perf.m.jd.com/app_monitor/v3/report','https://mars.jd.com/log/sdk/v2']){
+    for(const reverse of [false,true]){
+      const store=new Map(),messages=[];let done=0;
+      const requests=[
+        Object.freeze({url:'https://sh.jd.com/j/Synthetic_123',headers:Object.freeze({Cookie:'wskey=synthetic_secret; pin_hash=123456789'})}),
+        Object.freeze({url:pinURL,headers:Object.freeze({Cookie:Object.freeze(['pt_pin=synthetic_user','pt_key=synthetic_web'])})})
+      ];
+      if(reverse)requests.reverse();
+      for(const request of requests){
+        const before=JSON.stringify(request),sandbox={$request:request,
+          $persistentStore:{read:k=>store.get(k),write:(v,k)=>{store.set(k,v);return true;}},
+          $notification:{post:(...args)=>messages.push(args)},
+          $done:v=>{assert.equal(Object.keys(v).length,0);done++;}};
+        for(const name of ['$httpClient','$task','fetch','WebSocket','XMLHttpRequest','require','process','console','setTimeout'])
+          Object.defineProperty(sandbox,name,{get(){assert.fail('Forbidden capability '+name);}});
+        new vm.Script(source).runInContext(vm.createContext(sandbox,{codeGeneration:{strings:false,wasm:false}}),{timeout:1000});
+        assert.equal(JSON.stringify(request),before);
+      }
+      assert.equal(done,2);assert.equal(messages.at(-1)[1],'APP_MERGED_UNVERIFIED');
+      const merged=JSON.parse(store.get('jdAppWskeyMergedV1'));
+      assert.equal(merged.cookie,'pin=synthetic_user; wskey=synthetic_secret;');
+      assert.equal(merged.identity,'cross-request-unverified');
+      assert.doesNotMatch(JSON.stringify(messages),/synthetic|123456789/);
+      assert.doesNotMatch(JSON.stringify([...store.values()]),/synthetic_web|123456789/);
+    }
+  }
+});

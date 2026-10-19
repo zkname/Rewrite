@@ -2,16 +2,16 @@
   "files": [
     {
       "path": "jd-wskey-local/src/core.mjs",
-      "sha256": "66cd39c7e42f2f45d15843a8cb4173ff4598e4b32840cce790a864d4f4e996eb"
+      "sha256": "ae15d8acd4d29bf6c153437887222807470957acf0028e557fd35606773a06ff"
     },
     {
       "path": "jd-wskey-local/src/runner.mjs",
-      "sha256": "71b1be031efb62ab4a9f98a7b8170176d749ff3293c432254123bf7715c8daa7"
+      "sha256": "2d3b25e559425ad14f9cc1a2019e4fd0192a6ad4e1587b9ec688ecc0cdd71fcb"
     },
     {
       "path": "jd-wskey-local/src/adapter.js",
-      "sha256": "59ff14a76e711cd794bd437d4de6a30107c5a55619a0fe738ba9a950b512d1ab"
+      "sha256": "bebc5ccda60edd1608d5cfdee5e14e5978e18c30fc662f6199f9e0b1ca42c650"
     }
   ],
-  "bundleSha256": "6fcc4ff934f8010bdef0bb02534c30467c1c2eb3163aee5c2a5669da2ef6c342"
+  "bundleSha256": "dade4b789e1e8b528e486bf86105815e3a5afc0c8bcbb2439192d6926c0111ca"
 }

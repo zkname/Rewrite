@@ -1,21 +1,22 @@
 {
-  "bundleSha256": "6fcc4ff934f8010bdef0bb02534c30467c1c2eb3163aee5c2a5669da2ef6c342",
+  "bundleSha256": "dade4b789e1e8b528e486bf86105815e3a5afc0c8bcbb2439192d6926c0111ca",
   "findings": [],
   "mode": "app-wskey",
   "emittedRequestHosts": [],
   "runtimeDependencies": [],
   "reviewed": [
-    "Only exact blackhole/perf HTTPS hosts and sh.jd.com /j/<id> HTTPS requests are read",
+    "Only exact blackhole/perf HTTPS hosts, sh.jd.com /j/<id> and mars.jd.com /log/sdk/v2 HTTPS requests are read",
     "No network, process, dynamic code or logging API",
     "Capture and manual status forward the original request unchanged",
     "Credentials are stored only in dedicated local App storage",
-    "Identity is never combined across requests or marked verified",
+    "Cross-request pairing is explicitly unverified, within fifteen minutes, and reset on observed account or wskey changes",
     "Only fixed status codes reach notifications"
   ],
   "limits": [
     "Current JD App and Loon compatibility still require phone testing",
     "Local storage is not claimed to be encrypted",
     "Fifteen-minute cleanup occurs on the next execution; no background deletion",
+    "Time proximity cannot prove that wskey and pin belong to the same account",
     "No conversion, renewal or Qinglong acceptance is performed"
   ]
 }

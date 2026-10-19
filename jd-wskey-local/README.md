@@ -1,47 +1,54 @@
-# 京东 App WSKEY 本地抓取
+# 京东 App WSKEY 本地抓取与合并
 
-恢复 App 抓取用途，独立保留网页版工具。脚本观察 `blackhole.m.jd.com`、`perf.m.jd.com`
-的 HTTPS 请求，以及 `https://sh.jd.com/j/<标识>` 请求；不改变请求、不发送网络请求、不自动转换或续期、不上传。
-前两个域名来自原插件，`sh.jd.com/j/…` 来自用户实际观察到的 App 请求结构。测试仅使用合成数据，
-不保存用户提供的凭据、完整 URL 或设备参数。手机插件仍须实测。
+分别捕获 App 请求中的 `wskey` 和 `pin/pt_pin`，在十五分钟内到齐后自动合并为
+`pin=…; wskey=…;`，只保存到手机本地。抓取顺序不限，原始记录分别保留。
+合并结果标为“待核验”：时间接近不能证明两个字段属于同一账号，也不能证明凭据有效。
+工具不转换 Cookie、不续期、不上传，不改变 App 原请求。
+
+观察的 HTTPS 入口为 `blackhole.m.jd.com`、`perf.m.jd.com`，以及 `sh.jd.com/j/<标识>`、
+`mars.jd.com/log/sdk/v2`。前两个域名来自原插件，后两个路径来自用户实际观察到的请求结构。
+仅提取 wskey、pin、pt_pin，不保存 pt_key、pin_hash、设备字段或完整 URL。
 
 ## 手机使用
 
-已发布到 `feat/jd-cookie-local` 测试分支，原 `jd-cookie-local/get_jd_cookie.plugin` 与 `.legacy.plugin` 订阅入口改为 App 抓取。
-本次 `sh.jd.com/j/…` 兼容修复已加入测试分支发布版本；更新插件后请确认 MitM 列表包含 `sh.jd.com`。
-新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 legacy。仅启用其中一个，停用其他旧 wskey 规则。
-在 Loon 更新已有插件、在 BoxJs 更新已有订阅后使用；手机抓取仍须实测。
+本次合并版本已在本地完成验证，尚未推送；远端订阅暂时仍是上一版。发布后更新以下现有入口，
+无需新建订阅：Loon 的 `jd-cookie-local/get_jd_cookie.plugin`，BoxJs 的 `jd-cookie-local/boxjs.json`。
+新版语法适用于 Loon 3.5.1 Build 983+；旧客户端用 `.legacy.plugin`。仅启用其中一个，停用其他旧 wskey 规则。
 
-1. 在 Loon 启用插件与 MitM，安装并信任 Loon 证书。MitM 域名为 `blackhole.m.jd.com`、`perf.m.jd.com`、`sh.jd.com`。
-   Loon 的 MitM 按域名生效；脚本对 `sh.jd.com` 只匹配 `/j/<标识>`，不保存其他路径的请求数据。
-2. 保持 App 登录，划掉后台重新打开，正常使用首页和“我的”。没有保证触发的固定页面。
-3. 在 Loon 脚本列表点“京东App抓取状态”。此操作本地执行，即使没有匹配请求也能提示状态。
-4. 更新已有 BoxJs 订阅 `jd-cookie-local/boxjs.json`，打开新增的“京东App WSKEY”。
-   原“京东本地Cookie”仍展示网页校验结果，与 wskey 数据互不混用。
-5. 在“最近抓到的 WSKEY”中复制 `credential.cookie`。同一请求有 pin 时是
-   `pin=…; wskey=…;`；只有 wskey 时保持账号未知，后续换取并验证 Cookie 才能确认身份。
-   请求里的 `pin_hash` 不能当作 `pin`；只有 wskey 和 pin_hash 时显示 `APP_WSKEY_ONLY` 是预期结果。
-   不发送到聊天或日志，不手动拼接其他请求的 pin。用完运行“京东App清除暂存”。
+1. 更新 Loon 插件和 BoxJs 订阅。启用 MitM 并信任 Loon 证书；域名列表应包括
+   `blackhole.m.jd.com`、`perf.m.jd.com`、`sh.jd.com`、`mars.jd.com`。
+2. 在 Loon 脚本列表先运行“京东App清除暂存”。保持同一京东账号登录，划掉后台重新打开，
+   正常使用首页和“我的”。没有保证触发的固定页面；切换账号前必须再次清除暂存。
+3. 只有 wskey 时提示等待 pin/pt_pin，只有 pin/pt_pin 时提示等待 wskey；两项到齐后提示“已合并保存”。
+   可运行“京东App抓取状态”手动查看状态。
+4. 在 BoxJs → 应用 → “京东App WSKEY” → “合并结果（待核验，敏感）”，复制 JSON 中的 `cookie` 字段，
+   格式为 `pin=…; wskey=…;`。不要复制整个 JSON，也不要发到聊天或日志。
+5. 用完运行“京东App清除暂存”。只有 `pin_hash` 时无法补全 pin，仍需等待另一条请求携带 pin/pt_pin。
 
 | 状态 | 含义 |
 | --- | --- |
-| APP_NOT_SEEN | 插件尚未看到匹配请求；检查 MitM、证书、插件及请求记录 |
-| APP_NO_COOKIE | 匹配请求没有 Cookie 头 |
-| APP_NO_WSKEY | 匹配请求的 Cookie 没有 wskey |
-| APP_WSKEY_ONLY | 已抓到 wskey，同一请求没有 pin |
-| APP_CAPTURED | 同一请求有 wskey 和 pin，尚未验证有效性或账号身份 |
+| APP_NOT_SEEN | 尚未看到匹配请求；检查 MitM、证书、插件及请求记录 |
+| APP_NO_COOKIE | 最近匹配请求没有 Cookie 头 |
+| APP_NO_WSKEY | 最近匹配请求没有 wskey 或 pin/pt_pin |
+| APP_WSKEY_ONLY | 已抓到 wskey，等待 pin/pt_pin |
+| APP_PIN_CAPTURED | 已抓到 pin/pt_pin，等待 wskey |
+| APP_MERGED_UNVERIFIED | 已跨请求合并保存，未核验账号归属与有效性 |
+| APP_CAPTURED | 同一请求已抓到 wskey 和 pin/pt_pin，未核验有效性 |
 | APP_EXPIRED | 暂存超过十五分钟或设备时间回退；这是本地期限，不是京东失效结论 |
 
-通知不显示凭据或账号；同状态自动提示每分钟最多一次，新凭据可以立即提示。手动状态总会提示。
-最新一条带 wskey 的请求覆盖本插件暂存，绝不跨请求合并账号。只有 pin 的请求不改写已有凭据。
-暂存满十五分钟后，在下一次执行时清除；脚本不常驻，BoxJs 打开不会触发后台过期清理。
-本地 Loon/BoxJs 存储不承诺加密，请不要备份或共享其敏感字段。旧 `wskeyList` 不读取、不迁移。
+两个字段分别计算十五分钟期限。观察到 pin 变化会清除旧 wskey；观察到 wskey 变化会清除旧 pin，
+并清除旧合并结果。如果新请求同时携带两项，则保存这一请求的完整记录。
+未观察到的账号切换仍可能造成误配，因此合并结果始终不算已验证身份。
+通知只显示固定状态，不显示凭据或账号；同状态自动提示每分钟最多一次，新凭据可以立即提示。
+
+过期清理在下一次脚本执行时发生；脚本不常驻，单独打开 BoxJs 不会触发清理。
+Loon 存储没有跨执行事务保证，高并发下不保证写入顺序，也不承诺加密。不要云备份敏感字段。
+旧 `wskeyList` 不读取、不迁移。网页“京东本地Cookie”和 `jdCookieList` 保持独立。
 
 ## 保留网页版
 
-归档入口是 `jd-cookie-local/get_jd_web_cookie.plugin` 与 `.legacy.plugin`，内部仍固定到已发布的
-网页脚本提交。根目录旧文件名 `get_jd_wskey.js` 仍为网页兼容脚本；新的 App 脚本文件为
-`get_jd_app_wskey.js`，避免改变已有固定网页订阅的含义。
+归档入口是 `jd-cookie-local/get_jd_web_cookie.plugin` 与 `.legacy.plugin`，固定到已发布的网页脚本提交。
+根目录旧文件名 `get_jd_wskey.js` 仍为网页兼容脚本，App 脚本文件为 `get_jd_app_wskey.js`。
 
 ## 本地验证与发布准备
 
@@ -52,9 +59,9 @@ node jd-wskey-local/tools/audit.mjs
 ```
 
 生成脚本只含本目录三份明文源码，无运行依赖。先将通过检查的脚本提交到本地 Git，再运行
-`node jd-wskey-local/tools/write-config.mjs <完整本地提交号>` 固定插件引用。该工具只写本地配置，
-不提交、不推送、不修改远端。是否推送由用户另行明确授权；不自动合并 main。
+`node jd-wskey-local/tools/write-config.mjs <完整本地提交号>` 固定插件引用。该工具只生成本地配置，
+不提交、不推送。是否推送由用户明确授权，不自动合并 main。隔离验证记录见 `AUDIT.md` 和 `isolation-report.json`。
 
 原版参考：`zkname/Rewrite@a8b75ba3433521bc334627dc8f7a1ba540feecb4:get_jd_wskey.js`。
-沿用原版两个监听域名与抓取用途，并加入实测观察到的 sh 路径；解析、状态和适配器重新实现，无旧 Env 包装器、签名、HTTP 客户端、
-跨请求缓存拼接、凭据日志及自动提交配置。未将上游原版擅自标为自有代码。
+沿用原版抓取用途；解析、状态、适配器和本次明确标记未核验的限时配对重新实现。
+无旧 Env 包装器、签名、HTTP 客户端、凭据日志或自动提交配置。未将上游原版擅自标为自有代码。
